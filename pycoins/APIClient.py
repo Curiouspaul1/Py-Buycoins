@@ -1,5 +1,3 @@
-import os
-import requests
 from exc import MissingKeyError
 from base64 import b64encode
 
@@ -11,7 +9,6 @@ class PycoinsClient:
 
     _URL = "https://backend.buycoins.tech/api/graphql"
 
-
     def __init__(self, public_key=None, secret_key=None):
         if not public_key:
             raise MissingKeyError("Missing Public_key")
@@ -20,12 +17,10 @@ class PycoinsClient:
         api_key = b64encode(f"{public_key}:{secret_key}".encode('utf-8'))
         self.API_KEY = api_key.decode('utf-8')
 
-
     def set_headers(self):
         return {
             "Authorization": f"Basic {self.API_KEY}"
         }
-    
 
     def buy(self):
         """
@@ -33,13 +28,11 @@ class PycoinsClient:
         """
         pass
 
-
     def sell(self):
         """
         sell coins
         """
         pass
-
 
     def send(self):
         """
