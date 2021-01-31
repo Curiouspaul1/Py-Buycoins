@@ -24,8 +24,20 @@ class Mutation:
 
 class createDepositAccount(Mutation):
     def __init__(self):
-        super(createDepositAccount, self).__init__()
+        """
+        Create deposit account
+        """
+        super().__init__()
         self.name = "createDepositAccount"
+
+
+class Buy(Mutation):
+    def __init__(self):
+        """
+        Buy crypto
+        """
+        super().__init__()
+        self.name = "buy"
 
 
 # create_account = createDepositAccount()

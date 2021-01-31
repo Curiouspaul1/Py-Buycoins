@@ -1,5 +1,6 @@
 from exc import MissingKeyError
 from base64 import b64encode
+from actions.buy import Buycoins
 
 
 class PycoinsClient:
