@@ -1,5 +1,5 @@
-from graphqlcore.mutations import createDepositAccount, Buy
-from graphqlcore.queries import GetsalePrice
+from gcore.mutations import createDepositAccount, Buy
+from gcore.queries import GetsalePrice
 from typing import List
 
 
