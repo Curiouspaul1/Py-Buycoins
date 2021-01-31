@@ -24,9 +24,13 @@ class Buycoins(Buybase):
         super().__init__()
         self.from_buycoins = True
 
-    def _buy(self, fields: List[tuple], subfields: List) -> str:
-        order = Buy().Mutate(
-            fields=fields,
-            subfields=subfields
+    def _buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency) -> str:
+        order = Buy(
+            coin_amount=coin_amount,
+            price=price,
+            subfields=subfields,
+            cryptocurrency=cryptocurrency
         )
-        return order
+        return order.Mutate()
+
+    

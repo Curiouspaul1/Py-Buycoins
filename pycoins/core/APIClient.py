@@ -25,16 +25,19 @@ class PycoinsClient:
             "Authorization": f"Basic {self.API_KEY}"
         }
 
-    def buy(self, subfields: List, fields: List[tuple], from_buycoins: Optional[bool] = True):
+    def buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency, from_buycoins: Optional[bool] = True):
         """
         buy coins
         """
         headers = self.set_headers()
         if from_buycoins is True:
             _order = Buycoins()._buy(
-                fields=fields,
-                subfields=subfields
+                subfields=subfields,
+                price=price,
+                coin_amount=coin_amount,
+                cryptocurrency=cryptocurrency
             )
+            print(_order)
             _req = requests.post(
                 url=PycoinsClient._URL,
                 json={"query": _order},
@@ -64,21 +67,13 @@ class PycoinsClient:
 
 client = PycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
 print(client.buy(
-    fields=[
-        (
-            "price","QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ="
-        ),
-        (
-            "coin_amount", 0.002
-        ),
-        (
-            "cryptocurrency", "bitcoin"
-        )
-    ],
     subfields=[
         "id",
         "cryptocurrency",
         "status",
         "totalCoinAmount"
-    ]
+    ],
+    price="QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ=",
+    coin_amount=0.002,
+    cryptocurrency="bitcoin"
 ))
