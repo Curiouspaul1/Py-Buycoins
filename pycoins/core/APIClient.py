@@ -25,13 +25,34 @@ class PycoinsClient:
             "Authorization": f"Basic {self.API_KEY}"
         }
 
+    def getSalePrice(self, subfields: List):
+        headers = self.set_headers()
+        getprice = Buycoins().getSalePrice(subfields=subfields)
+        _req = requests.post(
+            json={"query": getprice},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
+    def createDepositAcct(self, fields: List[tuple], subfields: List):
+        headers = self.set_headers()
+        new_acct = Buycoins().createAccount(fields=fields, subfields=subfields)
+        _req = requests.post(
+            json={"query": new_acct},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
     def buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency, from_buycoins: Optional[bool] = True):
         """
         buy coins
         """
         headers = self.set_headers()
         if from_buycoins is True:
-            _order = Buycoins()._buy(
+            buy_instance = Buycoins()
+            _order = buy_instance._buy(
                 subfields=subfields,
                 price=price,
                 coin_amount=coin_amount,
@@ -43,8 +64,9 @@ class PycoinsClient:
                 json={"query": _order},
                 headers=headers
             )
-            return _req.json()
+            return (_req.json(), _req.status_code)
         else:
+            # TODO: P2P trading
             pass
 
     def sell(self):
@@ -64,16 +86,3 @@ class PycoinsClient:
         receive coins
         """
 
-
-client = PycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
-print(client.buy(
-    subfields=[
-        "id",
-        "cryptocurrency",
-        "status",
-        "totalCoinAmount"
-    ],
-    price="QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ=",
-    coin_amount=0.002,
-    cryptocurrency="bitcoin"
-))

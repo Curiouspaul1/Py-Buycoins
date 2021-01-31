@@ -13,7 +13,7 @@ class Buybase:
         return acct
 
     def getSalePrice(self, subfields: List) -> str:
-        return GetsalePrice(
+        return GetsalePrice().queryObject(
             subfields=subfields
         )
 
@@ -32,5 +32,3 @@ class Buycoins(Buybase):
             cryptocurrency=cryptocurrency
         )
         return order.Mutate()
-
-    
