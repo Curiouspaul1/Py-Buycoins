@@ -8,9 +8,9 @@ class Query:
 
     def queryObject(self, subfields: List, _args: Optional[List[tuple]]=None):
         if _args:
-            mod_fields = [f"{i[0]}:\"{i[1]}\"" for i in _args]
-            _args = tuple(i.strip("\'") for i in mod_fields)
-            newline = "\n"
+            mod_fields = [f"{i[0]}:{i[1]}" for i in _args]
+            _args = tuple(i for i in mod_fields)
+            newline = "\n                "
             result = f"""
             query {{
                 {self.name}{_args}{{
@@ -20,7 +20,7 @@ class Query:
             """
             return result.replace("\'", "")
         else:
-            newline = "\n"
+            newline = "\n                    "
             result = f"""
             query {{
                 {self.name}{{
