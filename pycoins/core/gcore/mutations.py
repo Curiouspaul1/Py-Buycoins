@@ -56,6 +56,31 @@ class Buy(Mutation):
         return result
 
 
+class Sell(Mutation):
+    def __init__(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
+        """
+        Sell crypto
+        """
+        super().__init__()
+        self.name = "sell"
+        self.price = price
+        self.coin_amount = coin_amount
+        self.cryptocurrency = cryptocurrency
+        self.subfields = subfields
+
+    def Mutate(self):
+        newline = "\n                "
+        result = f"""
+        mutation {{
+            {self.name}(price: \"{f"{self.price}"}\", coin_amount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency})
+            {{
+                {newline.join(i for i in self.subfields)}
+            }}
+        }}
+        """
+        return result
+
+
 # create_account = createDepositAccount()
 
 # print(create_account.Mutate(

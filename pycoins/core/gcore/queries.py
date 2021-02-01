@@ -13,7 +13,7 @@ class Query:
             newline = "\n                "
             result = f"""
             query {{
-                {self.name}{_args}{{
+                {self.name}{f"{_args}"}{{
                     {newline.join(i for i in subfields)}
                 }}
             }}
@@ -41,8 +41,18 @@ class GetsalePrice(Query):
         self.name = "getPrices"
 
 
+class Getnetworkprice(Query):
+    """
+    Transfer charges
+    """
+    def __init__(self):
+        super().__init__()
+        self.name = "getEstimatedNetworkFee"
+
+
 # getprice = GetsalePrice()
 # print(getprice.queryObject(
+#     _args=[("id", 1)],
 #     subfields=[
 #         "id", "cryptocurrency", "buyPricePerCoin"
 #     ]
