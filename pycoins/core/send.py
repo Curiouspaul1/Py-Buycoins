@@ -1,4 +1,5 @@
 from gcore.queries import Getnetworkprice
+from gcore.mutations import SendCoin
 from typing import List
 
 
@@ -7,6 +8,10 @@ class Send:
         _price = Getnetworkprice()
         return _price.queryObject()
     
-    def send(self):
-        pass
-
+    def _send(self, amount, cryptocurrency, address, subfields: List):
+        return SendCoin(
+            cryptocurrency=cryptocurrency,
+            subfields=subfields,
+            amount=amount,
+            address=address
+        ).Mutate()
