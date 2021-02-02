@@ -27,7 +27,6 @@ class Buybase:
 class Buycoins(Buybase):
     def __init__(self):
         super().__init__()
-        self.from_buycoins = True
 
     def _buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency) -> str:
         order = Buy(
@@ -39,11 +38,10 @@ class Buycoins(Buybase):
         return order.Mutate()
 
 
-# P2P trading
+# P2P purchase
 class BuycoinsP2P(Buybase):
     def __init__(self):
         super().__init__()
-        self.from_buycoins = False
 
     def _buyp2p(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
         order = PostLimitOrder(
