@@ -157,8 +157,27 @@ class SendCoin(Mutation):
         return result
 
 
-# create_account = createDepositAccount()
+class createAddress(Mutation):
+    def __init__(self, cryptocurrency, subfields: List):
+        super().__init__()
+        self.name = "createAddress"
+        self.cryptocurrency = cryptocurrency
+        self.subfields = subfields
 
+    def Mutate(self):
+        newline = "\n                "
+        result = f"""
+        mutation {{
+            {self.name}(cryptocurrency: {self.cryptocurrency})
+            {{
+                {newline.join(i for i in self.subfields)}
+            }}
+        }}
+        """
+        return result
+
+
+# create_account = createDepositAccount()
 # print(create_account.Mutate(
 #             fields=[('accountName', "tony stark")],
 #             subfields=["accountNumber", "accountName", "accountType", "bankName"]

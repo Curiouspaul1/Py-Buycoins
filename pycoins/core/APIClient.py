@@ -3,6 +3,7 @@ from base64 import b64encode
 from buy import Buycoins, BuycoinsP2P
 from sell import Sellcoins
 from send import Send
+from receive import Receive
 from typing import Optional, List
 import requests
 
@@ -34,6 +35,19 @@ class PycoinsClient:
             json={"query": getprice},
             url=PycoinsClient._URL,
             headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
+    def createAddress(self, cryptocurrency, subfields):
+        headers = self.set_headers()
+        new_address = Receive().create_address(
+            cryptocurrency,
+            subfields
+        )
+        _req = requests.post(
+            json={"query": new_address},
+            headers=headers,
+            url=PycoinsClient._URL
         )
         return (_req.json(), _req.status_code)
 
@@ -123,7 +137,6 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    
     def post_market_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency: str):
         headers = self.set_headers()
         _post = BuycoinsP2P()
@@ -139,7 +152,6 @@ class PycoinsClient:
             header=headers
         )
         return (_req.json(), _req.status_code)
-
 
     def sell(self, subfields: List, price: str, coin_amount: float, cryptocurrency, to_buycoins: Optional[bool] = True):
         """
