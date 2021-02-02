@@ -37,6 +37,18 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
+    
+    def getDynamicPriceExpiry(self, subfields: List):
+        headers = self.set_headers()
+        getdate = Buycoins().getDynamicPrice(subfields=subfields)
+        _req = requests.post(
+            json={"query": getdate},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
+
     def createDepositAcct(self, fields: List[tuple], subfields: List):
         headers = self.set_headers()
         new_acct = Buycoins().createAccount(fields=fields, subfields=subfields)
@@ -102,7 +114,6 @@ class PycoinsClient:
             )
             return (_req.json(), _req.status_code)
         else:
-            # TODO: P2P trading
             pass
 
     def send(self):

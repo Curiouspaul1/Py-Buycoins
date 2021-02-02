@@ -30,7 +30,6 @@ class Query:
             """
             return result
 
-
 # Get Sale Price
 class GetsalePrice(Query):
     """
@@ -48,6 +47,15 @@ class Getnetworkprice(Query):
     def __init__(self):
         super().__init__()
         self.name = "getEstimatedNetworkFee"
+
+
+class GetDynamicPriceExpiry(Query):
+    """
+    Expiration date of a dynamic price
+    """
+    def __init__(self):
+        super().__init__()
+        self.name = "getOrders"
 
 
 # getprice = GetsalePrice()

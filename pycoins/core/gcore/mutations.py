@@ -31,6 +31,7 @@ class createDepositAccount(Mutation):
         self.name = "createDepositAccount"
 
 
+# Buy from BuyCoins
 class Buy(Mutation):
     def __init__(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
         """
@@ -54,6 +55,38 @@ class Buy(Mutation):
         }}
         """
         return result
+
+
+class PostLimitOrder(Mutation):
+    def __init__(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price: Optional[List[tuple]]=None):
+        super.__init__()
+        self.name = "postLimitOrder"
+        self.order_side = order_side
+        self.coin_amount = coin_amount
+        self.cryptocurrency = cryptocurrency
+        self.price_type = price_type
+        
+        def Mutate(self):
+            newline = "\n                "
+            if price:
+                result = f"""
+                mutation {{
+                    {self.name}(orderSide: {self.order_side}, coinAmount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency}, priceType: {self.price_type}, price[0][0]: {price[0][1]})
+                    {{
+                        {newline.join(i for i in self.subfields)}
+                    }}
+                }}
+                """
+            else:
+                result = f"""
+                mutation {{
+                    {self.name}(orderSide: {self.order_side}, coinAmount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency}, priceType: {self.price_type})
+                    {{
+                        {newline.join(i for i in self.subfields)}
+                    }}
+                }}
+                """
+            return result
 
 
 class Sell(Mutation):
