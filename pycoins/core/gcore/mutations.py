@@ -58,7 +58,7 @@ class Buy(Mutation):
 
 
 class PostLimitOrder(Mutation):
-    def __init__(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price: Optional[List[tuple]]=None):
+    def __init__(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
         super.__init__()
         self.name = "postLimitOrder"
         self.order_side = order_side
@@ -68,10 +68,10 @@ class PostLimitOrder(Mutation):
         
         def Mutate(self):
             newline = "\n                "
-            if price:
+            if price_type_value:
                 result = f"""
                 mutation {{
-                    {self.name}(orderSide: {self.order_side}, coinAmount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency}, priceType: {self.price_type}, price[0][0]: {price[0][1]})
+                    {self.name}(orderSide: {self.order_side}, coinAmount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency}, priceType: {self.price_type}, price_type_value[0][0]: {price_type_value[0][1]})
                     {{
                         {newline.join(i for i in self.subfields)}
                     }}

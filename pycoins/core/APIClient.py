@@ -1,6 +1,6 @@
 from exc import MissingKeyError
 from base64 import b64encode
-from buy import Buycoins
+from buy import Buycoins, BuycoinsP2P
 from sell import Sellcoins
 from send import Send
 from typing import Optional, List
@@ -69,29 +69,49 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency, from_buycoins: Optional[bool] = True):
+
+    def buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
         """
-        buy coins
+        Direct purchase from BuyCoins
         """
         headers = self.set_headers()
-        if from_buycoins is True:
-            buy_instance = Buycoins()
-            _order = buy_instance._buy(
-                subfields=subfields,
-                price=price,
-                coin_amount=coin_amount,
-                cryptocurrency=cryptocurrency
+        buy_instance = Buycoins()
+        _order = buy_instance._buy(
+            subfields=subfields,
+            price=price,
+            coin_amount=coin_amount,
+            cryptocurrency=cryptocurrency
+        )
+        print(_order)
+        _req = requests.post(
+            url=PycoinsClient._URL,
+            json={"query": _order},
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+    
+    def buy_p2p(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
+        """
+        p2p purchase
+        """
+        headers = self.set_headers()
+        buy_instance = BuycoinsP2P()
+        _order = buy_instance._buyp2p(
+            subfields=subfields,
+            order_side=order_side,
+            coin_amount=coin_amount,
+            cryptocurrency=cryptocurrency,
+            price_type=price_type,
+            price_type_value = price_type_value
             )
-            print(_order)
-            _req = requests.post(
-                url=PycoinsClient._URL,
-                json={"query": _order},
-                headers=headers
-            )
-            return (_req.json(), _req.status_code)
-        else:
-            # TODO: P2P trading
-            pass
+        
+        _req = requests.post(
+            url=PycoinsClient._URL,
+            json={"query": _order},
+            header=headers
+        )
+        return (_req.json(), _req.status_code)
+
 
     def sell(self, subfields: List, price: str, coin_amount: float, cryptocurrency, to_buycoins: Optional[bool] = True):
         """
