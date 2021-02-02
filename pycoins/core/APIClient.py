@@ -154,11 +154,23 @@ class PycoinsClient:
         else:
             pass
 
-    def send(self):
+    def send(self, amount, cryptocurrency, address, subfields: List):
         """
         send coins
         """
-        pass
+        headers = self.set_headers()
+        new_send = Send()._send(
+            amount=amount,
+            cryptocurrency=cryptocurrency,
+            address=address,
+            subfields=subfields
+        )
+        _req = requests.post(
+            json={"query": new_send},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
 
     def receive(self):
         """
