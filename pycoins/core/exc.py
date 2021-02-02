@@ -8,3 +8,7 @@ class PycoinsException(Exception):
 
 class MissingKeyError(PycoinsException):
     pass
+
+
+class SendLimitError(PycoinsException):
+    pass

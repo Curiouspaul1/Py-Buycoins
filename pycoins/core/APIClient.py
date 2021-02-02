@@ -37,7 +37,6 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    
     def getDynamicPriceExpiry(self, subfields: List):
         headers = self.set_headers()
         getdate = Buycoins().getDynamicPrice(subfields=subfields)
@@ -47,7 +46,6 @@ class PycoinsClient:
             headers=headers
         )
         return (_req.json(), _req.status_code)
-
 
     def createDepositAcct(self, fields: List[tuple], subfields: List):
         headers = self.set_headers()
@@ -69,6 +67,18 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
+    def getBalance(self, subfields: List, args: Optional[List[tuple]]=None):
+        headers = self.set_headers()
+        _req = requests.post(
+            json={
+                "query": Send()._balance(
+                    args=args,
+                    subfields=subfields
+                )
+            },
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
 
     def buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
         """
@@ -89,7 +99,7 @@ class PycoinsClient:
             headers=headers
         )
         return (_req.json(), _req.status_code)
-    
+
     def buy_p2p(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
         """
         p2p purchase
@@ -102,16 +112,15 @@ class PycoinsClient:
             coin_amount=coin_amount,
             cryptocurrency=cryptocurrency,
             price_type=price_type,
-            price_type_value = price_type_value
+            price_type_value=price_type_value
             )
-        
+
         _req = requests.post(
             url=PycoinsClient._URL,
             json={"query": _order},
             header=headers
         )
         return (_req.json(), _req.status_code)
-
 
     def sell(self, subfields: List, price: str, coin_amount: float, cryptocurrency, to_buycoins: Optional[bool] = True):
         """

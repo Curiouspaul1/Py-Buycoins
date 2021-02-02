@@ -30,6 +30,7 @@ class Query:
             """
             return result
 
+
 # Get Sale Price
 class GetsalePrice(Query):
     """
@@ -56,6 +57,12 @@ class GetDynamicPriceExpiry(Query):
     def __init__(self):
         super().__init__()
         self.name = "getOrders"
+
+
+class GetBalance(Query):
+    def __init__(self):
+        super().__init__()
+        self.name = "getBalance"
 
 
 # getprice = GetsalePrice()
