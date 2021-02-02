@@ -1,4 +1,4 @@
-from gcore.mutations import createDepositAccount, Buy, PostLimitOrder
+from gcore.mutations import createDepositAccount, Buy, PostLimitOrder, PostMarketOrder
 from gcore.queries import GetsalePrice, GetDynamicPriceExpiry
 from typing import List
 
@@ -43,7 +43,7 @@ class BuycoinsP2P(Buybase):
     def __init__(self):
         super().__init__()
 
-    def _buyp2p(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
+    def limit_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
         order = PostLimitOrder(
             subfields=subfields,
             order_side=order_side,
@@ -51,5 +51,15 @@ class BuycoinsP2P(Buybase):
             cryptocurrency=cryptocurrency,
             price_type=price_type,
             price_type_value=price_type_value
+        )
+        return order.Mutate()
+
+    
+    def market_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency: str):
+        order = PostMarketOrder(
+            subfields=subfields,
+            order_side=order_side,
+            coin_amount=coin_amount,
+            cryptocurrency=cryptocurrency
         )
         return order.Mutate()

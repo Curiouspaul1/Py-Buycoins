@@ -89,14 +89,15 @@ class PycoinsClient:
             headers=headers
         )
         return (_req.json(), _req.status_code)
-    
-    def buy_p2p(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
+
+
+    def post_limit_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
         """
         p2p purchase
         """
         headers = self.set_headers()
-        buy_instance = BuycoinsP2P()
-        _order = buy_instance._buyp2p(
+        _post = BuycoinsP2P()
+        _order = _post.limit_order(
             subfields=subfields,
             order_side=order_side,
             coin_amount=coin_amount,
@@ -108,6 +109,23 @@ class PycoinsClient:
         _req = requests.post(
             url=PycoinsClient._URL,
             json={"query": _order},
+            header=headers
+        )
+        return (_req.json(), _req.status_code)
+
+    
+    def post_market_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency: str):
+        headers = self.set_headers()
+        _post = BuycoinsP2P()
+        _order = _post.market_order(
+            subfields=subfields,
+            order_side=order_side,
+            coin_amount=coin_amount,
+            cryptocurrency=cryptocurrency
+        )
+        _req = requests.post(
+            url=PycoinsClient._URL,
+            json={"query", _order},
             header=headers
         )
         return (_req.json(), _req.status_code)

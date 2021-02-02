@@ -88,6 +88,27 @@ class PostLimitOrder(Mutation):
                 """
             return result
 
+    
+class PostMarketOrder(Mutation):
+    def __init_(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency: str):
+        self.name = "postMarketOrder"
+        self.order_side = order_side
+        self.coin_amount = coin_amount
+        self.cryptocurrency = cryptocurrency
+        self.subfields = subfields
+
+    def Mutate(self):
+        newline = "\n                "
+        result = f"""
+        mutation {{
+            {self.name}(orderSide: {self.order_side}, coinAmount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency})
+            {{
+                {newline.join(i for i in self.subfields)}
+            }}
+        }}
+        """
+        return result
+
 
 class Sell(Mutation):
     def __init__(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
