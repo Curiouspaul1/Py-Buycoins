@@ -1,5 +1,5 @@
 from gcore.mutations import createDepositAccount, Buy, PostLimitOrder, PostMarketOrder
-from gcore.queries import GetsalePrice, GetDynamicPriceExpiry
+from gcore.queries import GetsalePrice, GetDynamicPriceExpiry, GetMarketBook
 from typing import List
 
 
@@ -17,10 +17,15 @@ class Buybase:
             subfields=subfields
         )
 
-    def getDynamicPrice(self, subfields: List) -> str:
-        return GetDynamicPriceExpiry().queryObject(
-            subfields=subfields
-        )
+    def getDynamicPrice(self, status: str, subfields: List) -> str:
+        return GetDynamicPriceExpiry(
+            status=status
+        ).queryObject(subfields=subfields)
+
+    def getMarketBook(self, status: str, subfields: List) -> str:
+        return GetMarketBook(
+            status=status
+        ).queryObject(subfields=subfields)
 
 
 # Buying from Buycoins

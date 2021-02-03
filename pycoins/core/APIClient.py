@@ -51,9 +51,11 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def getDynamicPriceExpiry(self, subfields: List):
+    def getOrders(self, status, subfields: List):
         headers = self.set_headers()
-        getdate = Buycoins().getDynamicPrice(subfields=subfields)
+        getdate = Buycoins().getDynamicPrice(
+            status=status, subfields=subfields
+            )
         _req = requests.post(
             json={"query": getdate},
             url=PycoinsClient._URL,
