@@ -75,6 +75,18 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
+    def getMarketBook(self, status, subfields: List) -> str:
+        headers = self.set_headers()
+        market_book = BuycoinsP2P().getMarketBook(
+            status=status
+        ).queryObject(subfields=subfields)
+        _req = requests.post(
+            json={"query": market_book},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
     def createDepositAcct(self, fields: List[tuple], subfields: List):
         headers = self.set_headers()
         new_acct = Buycoins().createAccount(fields=fields, subfields=subfields)
