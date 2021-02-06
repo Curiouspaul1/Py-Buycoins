@@ -1,5 +1,5 @@
 from gcore.mutations import createDepositAccount, Buy, PostLimitOrder, PostMarketOrder
-from gcore.queries import GetsalePrice, GetDynamicPriceExpiry, GetMarketBook
+from gcore.queries import GetsalePrice, GetOrders, GetMarketBook
 from typing import List
 
 
@@ -16,16 +16,6 @@ class Buybase:
         return GetsalePrice().queryObject(
             subfields=subfields
         )
-
-    def getDynamicPrice(self, status: str, subfields: List) -> str:
-        return GetDynamicPriceExpiry(
-            status=status
-        ).queryObject(subfields=subfields)
-
-    def getMarketBook(self, status: str, subfields: List) -> str:
-        return GetMarketBook(
-            status=status
-        ).queryObject(subfields=subfields)
 
 
 # Buying from Buycoins
@@ -47,6 +37,21 @@ class Buycoins(Buybase):
 class BuycoinsP2P(Buybase):
     def __init__(self):
         super().__init__()
+    
+    def getDynamicPrice(self, status: str) -> str:
+        return GetDynamicPriceExpiry(
+            status=status
+        ).queryObject()
+
+    def getOrders(self, status: str, subfields: List) -> str:
+        return GetOrders(
+            status=status
+        ).queryObject(subfields=subfields)
+
+    def getMarketBook(self, status: str, subfields: List) -> str:
+        return GetMarketBook(
+            status=status
+        ).queryObject(subfields=subfields)
 
     def limit_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
         order = PostLimitOrder(

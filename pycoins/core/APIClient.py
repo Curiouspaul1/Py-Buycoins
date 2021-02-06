@@ -53,7 +53,7 @@ class PycoinsClient:
 
     def getOrders(self, status, subfields: List):
         headers = self.set_headers()
-        getdate = Buycoins().getDynamicPrice(
+        getdate = Buycoins().getOrders(
             status=status, subfields=subfields
             )
         _req = requests.post(

@@ -50,10 +50,7 @@ class Getnetworkprice(Query):
         self.name = "getEstimatedNetworkFee"
 
 
-class GetDynamicPriceExpiry(Query):
-    """
-    Expiration date of a dynamic price
-    """
+class GetOrders(Query):
     def __init__(self, status):
         super().__init__()
         self.name = "getOrders"
@@ -77,6 +74,24 @@ class GetDynamicPriceExpiry(Query):
         """
         return result
 
+
+class GetDynamicPriceExpiry(GetOrders):
+    """
+    Expiration date of a dynamic price
+    """
+    def __init__(self, status):
+        super().__init__()
+        self.status = status
+
+    def queryObject(self):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name}(status: {self.status}){{
+                dynamicPriceExpiry
+        }}
+        """
+        return result
 
 class GetMarketBook(Query):
     def __init__(self, status):
