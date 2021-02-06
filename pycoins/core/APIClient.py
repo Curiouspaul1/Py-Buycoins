@@ -51,9 +51,21 @@ class PycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
+    def getDynamicprice(self, status=status):
+        headers = self.set_headers()
+        price = BuycoinsP2P().getDynamicPrice(
+            status=status
+        )
+        _req = requests.post(
+            json={"query": price},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
     def getOrders(self, status, subfields: List):
         headers = self.set_headers()
-        getdate = Buycoins().getOrders(
+        getdate = BuycoinsP2P().getOrders(
             status=status, subfields=subfields
             )
         _req = requests.post(
