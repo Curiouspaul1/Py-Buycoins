@@ -51,12 +51,38 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def getDynamicPriceExpiry(self, subfields: List):
+    def getDynamicprice(self, status=status):
         headers = self.set_headers()
-        getdate = Buycoins().getDynamicPrice(subfields=subfields)
+        price = BuycoinsP2P().getDynamicPrice(
+            status=status
+        )
+        _req = requests.post(
+            json={"query": price},
+            url=PycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
+    def getOrders(self, status, subfields: List):
+        headers = self.set_headers()
+        getdate = BuycoinsP2P().getOrders(
+            status=status, subfields=subfields
+            )
         _req = requests.post(
             json={"query": getdate},
             url=BuycoinsClient._URL,
+            headers=headers
+        )
+        return (_req.json(), _req.status_code)
+
+    def getMarketBook(self, status, subfields: List) -> str:
+        headers = self.set_headers()
+        market_book = BuycoinsP2P().getMarketBook(
+            status=status
+        ).queryObject(subfields=subfields)
+        _req = requests.post(
+            json={"query": market_book},
+            url=PycoinsClient._URL,
             headers=headers
         )
         return (_req.json(), _req.status_code)

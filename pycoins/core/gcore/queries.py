@@ -50,20 +50,79 @@ class Getnetworkprice(Query):
         self.name = "getEstimatedNetworkFee"
 
 
-class GetDynamicPriceExpiry(Query):
+class GetOrders(Query):
+    def __init__(self, status):
+        super().__init__()
+        self.name = "getOrders"
+        self.status = status
+    
+    def queryObject(self, subfields: List):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name}(status: {self.status}){{
+                dynamicPriceExpiry
+                orders {{
+                    edges {{
+                        node {{
+                            {newline.join(i for i in subfields)}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+        """
+        return result
+
+
+class GetDynamicPriceExpiry(GetOrders):
     """
     Expiration date of a dynamic price
     """
-    def __init__(self):
+    def __init__(self, status):
         super().__init__()
-        self.name = "getOrders"
+        self.status = status
+
+    def queryObject(self):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name}(status: {self.status}){{
+                dynamicPriceExpiry
+        }}
+        """
+        return result
+
+class GetMarketBook(Query):
+    def __init__(self, status):
+        super().__init__()
+        self.name = "getMarketBook"
+        self.status = status
+    
+    def queryObject(self, subfields: List):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name}(status: {self.status}){{
+                dynamicPriceExpiry
+                orders {{
+                    edges {{
+                        node {{
+                            {newline.join(i for i in subfields)}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+        """
+        return result
 
 
 class GetBalance(Query):
     def __init__(self):
         super().__init__()
         self.name = "getBalance"
-
+    
 
 # getprice = GetsalePrice()
 # print(getprice.queryObject(
