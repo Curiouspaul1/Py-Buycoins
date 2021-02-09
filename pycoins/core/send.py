@@ -1,7 +1,7 @@
-from gcore.queries import Getnetworkprice, GetBalance
-from gcore.mutations import SendCoin
+from core.gcore.queries import Getnetworkprice, GetBalance
+from core.gcore.mutations import SendCoin
 from typing import List, Optional
-from exc import SendLimitError
+from .exc import SendLimitError
 
 
 class Send:
