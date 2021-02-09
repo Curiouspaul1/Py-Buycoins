@@ -1,6 +1,6 @@
 from gcore.mutations import createDepositAccount, Buy, PostLimitOrder, PostMarketOrder
 from gcore.queries import GetsalePrice, GetOrders, GetMarketBook, GetDynamicPriceExpiry
-from typing import List
+from typing import List, Optional
 
 
 class Buybase:
