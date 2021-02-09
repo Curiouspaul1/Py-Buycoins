@@ -8,7 +8,7 @@ from typing import Optional, List
 import requests
 
 
-class PycoinsClient:
+class BuycoinsClient:
     """
     Handles requests
     """
@@ -33,7 +33,7 @@ class PycoinsClient:
         getprice = Buycoins().getSalePrice(subfields=subfields)
         _req = requests.post(
             json={"query": getprice},
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             headers=headers
         )
         return (_req.json(), _req.status_code)
@@ -47,7 +47,7 @@ class PycoinsClient:
         _req = requests.post(
             json={"query": new_address},
             headers=headers,
-            url=PycoinsClient._URL
+            url=BuycoinsClient._URL
         )
         return (_req.json(), _req.status_code)
 
@@ -56,7 +56,7 @@ class PycoinsClient:
         getdate = Buycoins().getDynamicPrice(subfields=subfields)
         _req = requests.post(
             json={"query": getdate},
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             headers=headers
         )
         return (_req.json(), _req.status_code)
@@ -66,7 +66,7 @@ class PycoinsClient:
         new_acct = Buycoins().createAccount(fields=fields, subfields=subfields)
         _req = requests.post(
             json={"query": new_acct},
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             headers=headers
         )
         return (_req.json(), _req.status_code)
@@ -76,7 +76,7 @@ class PycoinsClient:
         new_transaction = Send().getNetworkFee(subfields=subfields)
         _req = requests.post(
             json={"query": new_transaction},
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             headers=headers
         )
         return (_req.json(), _req.status_code)
@@ -84,6 +84,7 @@ class PycoinsClient:
     def getBalance(self, subfields: List, args: Optional[List[tuple]]=None):
         headers = self.set_headers()
         _req = requests.post(
+            url=BuycoinsClient._URL,
             json={
                 "query": Send()._balance(
                     args=args,
@@ -108,7 +109,7 @@ class PycoinsClient:
         )
         print(_order)
         _req = requests.post(
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             json={"query": _order},
             headers=headers
         )
@@ -131,7 +132,7 @@ class PycoinsClient:
             )
 
         _req = requests.post(
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             json={"query": _order},
             header=headers
         )
@@ -147,7 +148,7 @@ class PycoinsClient:
             cryptocurrency=cryptocurrency
         )
         _req = requests.post(
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             json={"query", _order},
             header=headers
         )
@@ -168,7 +169,7 @@ class PycoinsClient:
             )
             print(_order)
             _req = requests.post(
-                url=PycoinsClient._URL,
+                url=BuycoinsClient._URL,
                 json={"query": _order},
                 headers=headers
             )
@@ -189,7 +190,7 @@ class PycoinsClient:
         )
         _req = requests.post(
             json={"query": new_send},
-            url=PycoinsClient._URL,
+            url=BuycoinsClient._URL,
             headers=headers
         )
         return (_req.json(), _req.status_code)
@@ -200,7 +201,7 @@ class PycoinsClient:
         """
 
 
-client = PycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
+client = BuycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
 print(client.getSalePrice(["id","cryptocurrency","sellPricePerCoin"]))
 print(client.buy(
     subfields=[
@@ -213,3 +214,4 @@ print(client.buy(
     coin_amount=0.002,
     cryptocurrency="bitcoin"
 ))
+
