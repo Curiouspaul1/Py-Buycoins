@@ -1,10 +1,10 @@
 #from exc import MissingKeyError
-from .exc import MissingKeyError
+from exc import MissingKeyError
 from base64 import b64encode
-from .buy import Buycoins, BuycoinsP2P
-from .sell import Sellcoins
-from .send import Send
-from .receive import Receive
+from buy import Buycoins, BuycoinsP2P
+from sell import Sellcoins
+from send import Send
+from receive import Receive
 from typing import Optional, List
 import requests
 
@@ -227,18 +227,17 @@ class BuycoinsClient:
         receive coins
         """
 
-'''
-client = BuycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
-print(client.getSalePrice(["id","cryptocurrency","sellPricePerCoin"]))
-print(client.buy(
-    subfields=[
-        "id",
-        "cryptocurrency",
-        "status",
-        "totalCoinAmount"
-    ],
-    price="QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ=",
-    coin_amount=0.002,
-    cryptocurrency="bitcoin"
-))
-'''
+
+# client = BuycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
+# print(client.getSalePrice(["id","cryptocurrency","sellPricePerCoin"]))
+# print(client.buy(
+#     subfields=[
+#         "id",
+#         "cryptocurrency",
+#         "status",
+#         "totalCoinAmount"
+#     ],
+#     price="QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ=",
+#     coin_amount=0.002,
+#     cryptocurrency="bitcoin"
+# ))

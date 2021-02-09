@@ -1,5 +1,5 @@
-from core.gcore.mutations import createDepositAccount, Sell
-from core.gcore.queries import GetsalePrice
+from gcore.mutations import createDepositAccount, Sell
+from gcore.queries import GetsalePrice
 from typing import List
 
 
