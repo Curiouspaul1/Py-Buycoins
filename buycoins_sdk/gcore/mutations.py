@@ -33,28 +33,56 @@ class createDepositAccount(Mutation):
 
 # Buy from BuyCoins
 class Buy(Mutation):
-    def __init__(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
+    def __init__(self):
         """
         Buy crypto
         """
         super().__init__()
         self.name = "buy"
-        self.price = price
-        self.coin_amount = coin_amount
-        self.cryptocurrency = cryptocurrency
-        self.subfields = subfields
 
-    def Mutate(self):
-        newline = "\n                "
-        result = f"""
-        mutation {{
-            {self.name}(price: \"{f"{self.price}"}\", coin_amount: {self.coin_amount}, cryptocurrency: {self.cryptocurrency})
-            {{
-                {newline.join(i for i in self.subfields)}
+    def Mutate(self, price: str, coin_amount: float, cryptocurrency, subfields: Optional[List]=None):
+        if subfields:
+            newline = "\n                "
+            result = f"""
+            mutation {{
+                {self.name}(price: \"{f"{price}"}\", coin_amount: {coin_amount}, cryptocurrency: {cryptocurrency})
+                {{
+                    {newline.join(i for i in subfields)}
+                }}
             }}
-        }}
-        """
-        return result
+            """
+            return result
+        else:
+            newline = "\n                "
+            result = f"""
+            mutation {{
+                {self.name}(price: \"{f"{price}"}\", coin_amount: {coin_amount}, cryptocurrency: {cryptocurrency})
+                {{
+                    id
+                    price {{
+                        id
+                        status
+                        cryptocurrency
+                        minBuy
+                        minSell
+                        maxBuy
+                        maxSell
+                        minCoinAmount
+                        expiresAt
+                        buyPricePerCoin
+                        sellPricePerCoin
+                    }}
+                    cryptocurrency
+                    filledCoinAmount
+                    side
+                    status
+                    totalCoinAmount
+                    createdAt
+                }}
+            }}
+            """
+            return result
+            
 
 
 class PostLimitOrder(Mutation):
@@ -182,3 +210,8 @@ class createAddress(Mutation):
 #             fields=[('accountName', "tony stark")],
 #             subfields=["accountNumber", "accountName", "accountType", "bankName"]
 #         ))
+
+buy = Buy().Mutate(
+    "gibebersihhd",0.02,'bitcoin'
+)
+print(buy)

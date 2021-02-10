@@ -12,16 +12,24 @@ class Buybase:
         acct = new_acct.Mutate(fields, subfields)
         return acct
 
-    def getSalePrice(self, subfields: List, cryptocurrency: Optional[str]=None) -> str:
+    def getSalePrice(self, subfields: Optional[List]=None, cryptocurrency: Optional[str]=None) -> str:
         if cryptocurrency:
-            return GetsalePrice().queryObject(
-                cryptocurrency=cryptocurrency,
-                subfields=subfields
-            )
+            if subfields:
+                return GetsalePrice().queryObject(
+                    cryptocurrency=cryptocurrency,
+                    subfields=subfields
+                )
+            else:
+                return GetsalePrice().queryObject(
+                    cryptocurrency=cryptocurrency
+                )
         else:
-            return GetsalePrice().queryObject(
-                subfields=subfields
-            )
+            if subfields:
+                return GetsalePrice().queryObject(
+                    subfields=subfields
+                )
+            else:
+                return GetsalePrice().queryObject()
 
 
 # Buying from Buycoins
@@ -29,15 +37,22 @@ class Buycoins(Buybase):
     def __init__(self):
         super().__init__()
 
-    def _buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency) -> str:
-        order = Buy(
-            coin_amount=coin_amount,
-            price=price,
-            subfields=subfields,
-            cryptocurrency=cryptocurrency
-        )
-        return order.Mutate()
-
+    def _buy(self, price: str, coin_amount: float, cryptocurrency, subfields: Optional[List]=None) -> str:
+        if subfields:
+            order = Buy().Mutate(
+                coin_amount=coin_amount,
+                price=price,
+                subfields=subfields,
+                cryptocurrency=cryptocurrency
+            )
+            return order
+        else:
+            order = Buy.Mutate(
+                coin_amount=coin_amount,
+                price=price,
+                cryptocurrency=cryptocurrency
+            )
+            return order
 
 # P2P purchase
 class BuycoinsP2P(Buybase):

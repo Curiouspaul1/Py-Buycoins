@@ -24,23 +24,49 @@ class BuycoinsClient:
         api_key = b64encode(f"{public_key}:{secret_key}".encode('utf-8'))
         self.API_KEY = api_key.decode('utf-8')
 
+    #def send_custom_request(self, fields):
+
     def set_headers(self):
         return {
             "Authorization": f"Basic {self.API_KEY}"
         }
 
-    def get_sale_price(self, args: Optional[List[tuple]]=None, subfields: List):
+    def get_sale_price(self, subfields: Optional[List]=None, cryptocurrency: Optional[str]=None):
         headers = self.set_headers()
-        if args:
-            getprice = Buycoins().getSalePrice(args=args, subfields=subfields)
+        if cryptocurrency:
+            if subfields:
+                getprice = Buycoins().getSalePrice(cryptocurrency=cryptocurrency, subfields=subfields)
+                _req = requests.post(
+                    json={"query": getprice},
+                    url=BuycoinsClient._URL,
+                    headers=headers
+                )
+            else:
+                getprice = Buycoins().getSalePrice(cryptocurrency=cryptocurrency)
+                _req = requests.post(
+                    json={"query": getprice},
+                    url=BuycoinsClient._URL,
+                    headers=headers
+                )
+            if _req.status_code == 200:
+                return _req.json()['data']['getPrices'][0]
         else:
-            getprice = Buycoins().getSalePrice(subfields=subfields)
-        _req = requests.post(
-            json={"query": getprice},
-            url=BuycoinsClient._URL,
-            headers=headers
-        )
-        return (_req.json(), _req.status_code)
+            if subfields:
+                getprice = Buycoins().getSalePrice(subfields=subfields)
+                _req = requests.post(
+                    json={"query": getprice},
+                    url=BuycoinsClient._URL,
+                    headers=headers
+                )
+            else:
+                getprice = Buycoins().getSalePrice()
+                _req = requests.post(
+                    json={"query": getprice},
+                    url=BuycoinsClient._URL,
+                    headers=headers
+                )
+            if _req.status_code == 200:
+                return _req.json()['data']['getPrices']
 
     def create_address(self, cryptocurrency, subfields):
         headers = self.set_headers()
@@ -125,25 +151,34 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def buy(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
+    def buy(self, coin_amount: float, cryptocurrency, subfields: Optional[List]=None):
         """
         Direct purchase from BuyCoins
         """
         headers = self.set_headers()
         buy_instance = Buycoins()
-        _order = buy_instance._buy(
-            subfields=subfields,
-            price=price,
-            coin_amount=coin_amount,
-            cryptocurrency=cryptocurrency
-        )
+        print(self.get_sale_price(cryptocurrency=cryptocurrency))
+        if subfields:
+            _order = buy_instance._buy(
+                subfields=subfields,
+                price=self.get_sale_price(cryptocurrency=cryptocurrency)['id'],
+                coin_amount=coin_amount,
+                cryptocurrency=cryptocurrency
+            )
+        else:
+            _order = buy_instance._buy(
+                price=self.get_sale_price(cryptocurrency=cryptocurrency)['id'],
+                coin_amount=coin_amount,
+                cryptocurrency=cryptocurrency
+            )
         print(_order)
         _req = requests.post(
             url=BuycoinsClient._URL,
             json={"query": _order},
             headers=headers
         )
-        return (_req.json(), _req.status_code)
+        if _req.status_code == 200:
+            return _req.json()
 
 
     def post_limit_order(self, subfields: List, order_side: str, coin_amount: float, cryptocurrency, price_type: str, price_type_value: Optional[List[tuple]]=None):
@@ -232,15 +267,22 @@ class BuycoinsClient:
 
 
 # client = BuycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
-# print(client.get_sale_price(["id","cryptocurrency","sellPricePerCoin"]))
+# # print(client.get_sale_price(
+# #         [
+# #             "id","cryptocurrency",
+# #             "sellPricePerCoin"
+# #         ],
+# #         cryptocurrency='bitcoin'
+# #     )
+# # )
 # print(client.buy(
+#     coin_amount=0.002,
+#     cryptocurrency="bitcoin",
 #     subfields=[
 #         "id",
 #         "cryptocurrency",
 #         "status",
 #         "totalCoinAmount"
-#     ],
-#     price="QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ=",
-#     coin_amount=0.002,
-#     cryptocurrency="bitcoin"
+#     ]
 # ))
+

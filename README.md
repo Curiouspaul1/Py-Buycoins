@@ -1,9 +1,12 @@
 # Buycoins-SDK
 Python client for Buycoins Africa's API
-# Getting Started
 
-## Installation via pip
-`pip install buycoins-sdk`
+## Getting started
+Installation via Pip:
+
+```bash
+$ pip install buycoins-sdk
+```
 
 # Usage
 buycoins-sdk has a client class (BuycoinsClient) that handles all forms of requests via certain available methods. Consider this methods, to be already made queries on your behalf to the buycoins API. You can look at the official BuyCoins API docs [here](https://developers.buycoins.africa/)
@@ -42,15 +45,34 @@ Usually these keys are stored as environment variables, with the aid of a `.env`
 
 
 ## Basic Usage
-With the new client instance we've created we now have access to all handler methods, lets see how to buy crypto from buycoins. To buy we need to first observe the price of the coin we wish to purchase, our client class features a method; `get_sale_price` to fetch the current price of bitcoin (for example):
-### 
+With the new client instance we've created we now have access to all handler methods, lets see how to buy crypto from buycoins. To buy we invoke the buy() method of the client class, as follows:
+
 ```python
 # fetch current price of bitcoin
-price = client.get_sale_price(cryptocurrency='bitcoin')
+price = client.buy(
+    coin_amount=0.002,
+    cryptocurrency="bitcoin"
+)
 ```
-To fetch current price of all crypto, call the same method with any arguments.
+This request would return a number of subfields from the graphql response, by default, however you may not want all of the fields, as such you are at liberty to provision a "subfields" arguments, which is an array of strings, corresponding to the names of fields you want in the response body. For example:
 
-`price = client.get_sale_price()`
+```python
+# fetch current price of bitcoin
+price = client.buy(
+    coin_amount=0.002,
+    cryptocurrency="bitcoin",
+    subfields=[
+        "id",
+        "cryptocurrency",
+        "status",
+        "totalCoinAmount"
+    ]
+)
+```
+If you need to know what kind of fields are returned by the BuyCoins API, check the official docs [here](https://developers.buycoins.africa/).
+
+### Making Custom requests
+
 
 ### Note For Contributor
 

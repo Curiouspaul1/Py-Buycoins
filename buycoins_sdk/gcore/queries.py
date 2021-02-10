@@ -40,28 +40,71 @@ class GetsalePrice(Query):
         super().__init__()
         self.name = "getPrices"
 
-    def queryObject(self, subfields: List, cryptocurrency: Optional[str]=None):
+    def queryObject(self, subfields: Optional[List]=None, cryptocurrency: Optional[str]=None):
         if cryptocurrency:
-            newline = "\n                "
-            result = f"""
-            query {{
-                {self.name}(cryptocurrency: {cryptocurrency}){{
-                    {newline.join(i for i in subfields)}
+            if subfields:
+                newline = "\n                "
+                result = f"""
+                query {{
+                    {self.name}(cryptocurrency: {cryptocurrency}){{
+                        {newline.join(i for i in subfields)}
+                    }}
                 }}
-            }}
-            """
-            return result
+                """
+                return result
+            else:
+                newline = "\n                "
+                result = f"""
+                query {{
+                    {self.name}(cryptocurrency: {cryptocurrency}){{
+                        id
+                        status
+                        cryptocurrency
+                        minBuy
+                        minSell
+                        maxBuy
+                        maxSell
+                        minCoinAmount
+                        expiresAt
+                        buyPricePerCoin
+                        sellPricePerCoin
+                    }}
+                }}
+                """
+                return result
         else:
-            newline = "\n                    "
-            result = f"""
-            query {{
-                {self.name}{{
-                    {newline.join(i for i in subfields)}
+            if subfields:
+                newline = "\n                    "
+                result = f"""
+                query {{
+                    {self.name}{{
+                        {newline.join(i for i in subfields)}
+                    }}
                 }}
-            }}
-            """
-            return result
-
+                """
+                return result
+            else:
+                newline = "\n                    "
+                result = f"""
+                query {{
+                    {self.name}{{
+                        {{
+                            id
+                            status
+                            cryptocurrency
+                            minBuy
+                            minSell
+                            maxBuy
+                            maxSell
+                            minCoinAmount
+                            expiresAt
+                            buyPricePerCoin
+                            sellPricePerCoin
+                        }}
+                    }}
+                }}
+                """
+                return result
 
 class Getnetworkprice(Query):
     """
@@ -147,8 +190,4 @@ class GetBalance(Query):
     
 
 # getprice = GetsalePrice()
-# print(getprice.queryObject(
-#     subfields=[
-#         "id", "cryptocurrency", "buyPricePerCoin"
-#     ]
-# ))
+# print(getprice.queryObject())
