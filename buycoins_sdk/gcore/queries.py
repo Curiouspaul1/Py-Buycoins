@@ -40,6 +40,28 @@ class GetsalePrice(Query):
         super().__init__()
         self.name = "getPrices"
 
+    def queryObject(self, subfields: List, cryptocurrency: Optional[str]=None):
+        if cryptocurrency:
+            newline = "\n                "
+            result = f"""
+            query {{
+                {self.name}(cryptocurrency: {cryptocurrency}){{
+                    {newline.join(i for i in subfields)}
+                }}
+            }}
+            """
+            return result
+        else:
+            newline = "\n                    "
+            result = f"""
+            query {{
+                {self.name}{{
+                    {newline.join(i for i in subfields)}
+                }}
+            }}
+            """
+            return result
+
 
 class Getnetworkprice(Query):
     """
@@ -100,7 +122,7 @@ class GetMarketBook(Query):
         self.status = status
     
     def queryObject(self, subfields: List):
-        newline = "\n                    "
+        newline = "\n                       "
         result = f"""
         query {{
             {self.name}(status: {self.status}){{
@@ -126,7 +148,6 @@ class GetBalance(Query):
 
 # getprice = GetsalePrice()
 # print(getprice.queryObject(
-#     _args=[("id", 1)],
 #     subfields=[
 #         "id", "cryptocurrency", "buyPricePerCoin"
 #     ]

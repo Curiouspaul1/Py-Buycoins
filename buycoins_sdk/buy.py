@@ -12,10 +12,16 @@ class Buybase:
         acct = new_acct.Mutate(fields, subfields)
         return acct
 
-    def getSalePrice(self, subfields: List) -> str:
-        return GetsalePrice().queryObject(
-            subfields=subfields
-        )
+    def getSalePrice(self, subfields: List, cryptocurrency: Optional[str]=None) -> str:
+        if cryptocurrency:
+            return GetsalePrice().queryObject(
+                cryptocurrency=cryptocurrency,
+                subfields=subfields
+            )
+        else:
+            return GetsalePrice().queryObject(
+                subfields=subfields
+            )
 
 
 # Buying from Buycoins

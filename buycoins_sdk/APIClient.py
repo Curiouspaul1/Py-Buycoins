@@ -29,9 +29,12 @@ class BuycoinsClient:
             "Authorization": f"Basic {self.API_KEY}"
         }
 
-    def getSalePrice(self, subfields: List):
+    def get_sale_price(self, args: Optional[List[tuple]]=None, subfields: List):
         headers = self.set_headers()
-        getprice = Buycoins().getSalePrice(subfields=subfields)
+        if args:
+            getprice = Buycoins().getSalePrice(args=args, subfields=subfields)
+        else:
+            getprice = Buycoins().getSalePrice(subfields=subfields)
         _req = requests.post(
             json={"query": getprice},
             url=BuycoinsClient._URL,
@@ -39,7 +42,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def createAddress(self, cryptocurrency, subfields):
+    def create_address(self, cryptocurrency, subfields):
         headers = self.set_headers()
         new_address = Receive().create_address(
             cryptocurrency,
@@ -52,7 +55,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def getDynamicprice(self, status):
+    def get_dynamic_price(self, status):
         headers = self.set_headers()
         price = BuycoinsP2P().getDynamicPrice(
             status=status
@@ -64,7 +67,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def getOrders(self, status, subfields: List):
+    def get_orders(self, status, subfields: List):
         headers = self.set_headers()
         getdate = BuycoinsP2P().getOrders(
             status=status, subfields=subfields
@@ -76,7 +79,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def getMarketBook(self, status, subfields: List) -> str:
+    def get_market_book(self, status, subfields: List) -> str:
         headers = self.set_headers()
         market_book = BuycoinsP2P().getMarketBook(
             status=status
@@ -88,7 +91,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def createDepositAcct(self, fields: List[tuple], subfields: List):
+    def create_deposit_account(self, fields: List[tuple], subfields: List):
         headers = self.set_headers()
         new_acct = Buycoins().createAccount(fields=fields, subfields=subfields)
         _req = requests.post(
@@ -98,7 +101,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
     
-    def getEstimatedNetworkFee(self, subfields: List):
+    def get_network_fee(self, subfields: List):
         headers = self.set_headers()
         new_transaction = Send().getNetworkFee(subfields=subfields)
         _req = requests.post(
@@ -108,7 +111,7 @@ class BuycoinsClient:
         )
         return (_req.json(), _req.status_code)
 
-    def getBalance(self, subfields: List, args: Optional[List[tuple]]=None):
+    def get_balance(self, subfields: List, args: Optional[List[tuple]]=None):
         headers = self.set_headers()
         _req = requests.post(
             url=BuycoinsClient._URL,
@@ -229,7 +232,7 @@ class BuycoinsClient:
 
 
 # client = BuycoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUMv0CkeXt-xQqYP5Z31i0iGxA4")
-# print(client.getSalePrice(["id","cryptocurrency","sellPricePerCoin"]))
+# print(client.get_sale_price(["id","cryptocurrency","sellPricePerCoin"]))
 # print(client.buy(
 #     subfields=[
 #         "id",

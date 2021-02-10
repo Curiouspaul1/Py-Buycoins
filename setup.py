@@ -8,9 +8,28 @@ setup(
     packages=find_packages(include=['pycoins']),
     version='1.0',
     description='Python client library for BuyCoins Africa API',
-    long_description=long_description
-    author='Paul <paulcurious7@gmail.com>, Emmanuel Bashorun <>',
-    license=’MIT’,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    author='Paul <paulcurious7@gmail.com>, Emmanuel Bashorun <bashorun.emma@gmail.com>',
     url='https://github.com/Bashorun97/BuyCoins-Python-SDK',
-    classifiers='Development Status :: 4 - Beta'
+    classifiers=[
+        # Project Maturity
+        'Development Status :: 3 - Alpha',
+
+        # Indicate who your project is intended for
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: SDKs',
+
+        "Operating System :: OS Independent",
+
+        # License
+        'License :: OSI Approved :: MIT License',
+
+        # Python versions Support
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+    ]
 )
