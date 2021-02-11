@@ -9,12 +9,13 @@ class Mutation:
         self.name = None
 
     def Mutate(self, fields: List[tuple], subfields: List):
-        mod_fields = [f"{i[0]}:{i[1]}" for i in fields]
+        mod_fields = [f"{i[0]}: {str(i[1])}" for i in fields]
+        print(mod_fields)
         _args = tuple(i.strip("\'") for i in mod_fields)
         newline = "\n                "
         result = f"""
         mutation {{
-            {self.name}{_args}{{
+            {self.name}{_args} {{
                 {newline.join(i for i in subfields)}
             }}
         }}
@@ -22,12 +23,11 @@ class Mutation:
         return result.replace("\'", "")
 
 
-class createDepositAccount(Mutation):
+class CreateDepositAccount(Mutation):
     def __init__(self):
         """
         Create deposit account
         """
-        super().__init__()
         self.name = "createDepositAccount"
 
 
@@ -185,7 +185,7 @@ class SendCoin(Mutation):
         return result
 
 
-class createAddress(Mutation):
+class CreateAddress(Mutation):
     def __init__(self, cryptocurrency, subfields: List):
         super().__init__()
         self.name = "createAddress"
@@ -211,7 +211,8 @@ class createAddress(Mutation):
 #             subfields=["accountNumber", "accountName", "accountType", "bankName"]
 #         ))
 
+"""
 buy = Buy().Mutate(
     "gibebersihhd",0.02,'bitcoin'
 )
-print(buy)
+print(buy)"""

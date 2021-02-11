@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 
-# GraphQL Query
+# GraphQL Base Query
 class Query:
     def __init__(self):
         self.name = None
@@ -32,7 +32,7 @@ class Query:
 
 
 # Get Sale Price
-class GetsalePrice(Query):
+class GetSalePrice(Query):
     """
     Get Sale price for buying
     """
@@ -88,25 +88,23 @@ class GetsalePrice(Query):
                 result = f"""
                 query {{
                     {self.name}{{
-                        {{
-                            id
-                            status
-                            cryptocurrency
-                            minBuy
-                            minSell
-                            maxBuy
-                            maxSell
-                            minCoinAmount
-                            expiresAt
-                            buyPricePerCoin
-                            sellPricePerCoin
-                        }}
+                        id
+                        status
+                        cryptocurrency
+                        minBuy
+                        minSell
+                        maxBuy
+                        maxSell
+                        minCoinAmount
+                        expiresAt
+                        buyPricePerCoin
+                        sellPricePerCoin
                     }}
                 }}
                 """
                 return result
 
-class Getnetworkprice(Query):
+class GetNetworkFee(Query):
     """
     Transfer charges
     """

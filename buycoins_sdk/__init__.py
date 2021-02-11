@@ -1,1 +1,1 @@
-from APIClient import BuycoinsClient
+from .APIClient import BuyCoinsClient

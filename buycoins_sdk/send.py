@@ -1,4 +1,4 @@
-from gcore.queries import Getnetworkprice, GetBalance
+from gcore.queries import GetNetworkFee, GetBalance
 from gcore.mutations import SendCoin
 from typing import List, Optional
 from exc import SendLimitError
@@ -12,9 +12,9 @@ class Send:
         "nairatoken": 2000000
     }
 
-    def getNetworkFee(self, subfields: List):
-        _price = Getnetworkprice()
-        return _price.queryObject()
+    def get_network_fee(self, subfields: List, _args):
+        _price = GetNetworkFee()
+        return _price.queryObject(subfields=subfields, _args=_args)
 
     def check_limit(self, amount, cryptocurrency):
         if Send.limits[cryptocurrency.lower()] < amount:
@@ -22,8 +22,8 @@ class Send:
         else:
             return True
 
-    def _send(self, amount, cryptocurrency, address, subfields: List):
-        if cryptocurrency.lower() in Send.limit.keys():
+    def _send(self, cryptocurrency, amount, address, subfields: List):
+        if cryptocurrency.lower() in Send.limits.keys():
             if self.check_limit(amount, cryptocurrency):
                 return SendCoin(
                     cryptocurrency=cryptocurrency,

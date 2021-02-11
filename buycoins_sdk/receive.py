@@ -1,4 +1,4 @@
-from gcore.mutations import createAddress
+from gcore.mutations import CreateAddress
 from typing import List
 
 
