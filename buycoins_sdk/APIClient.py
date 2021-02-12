@@ -56,7 +56,7 @@ client = BuyCoinsClient(public_key="I_8roV2FBaA",secret_key="n3n0CA3Zf3z1ADhAwUM
 # q = SellCoins().sell("QnV5Y29pbnNQcmljZS0zOGIwYTg1Yi1jNjA1LTRhZjAtOWQ1My01ODk1MGVkMjUyYmQ=", 0.02, 'bitcoin', subfields=['id', 'cryptocurrency', 'status', 'totalCoinAmount', 'side'])
 
 # Sending
-# q = Send().get_network_fee(fields=[('cryptocurrency', 'bitcoin'), ('amount', 1)], subfields=['estimatedFee', 'total'],)
+# q = Send().get_network_fee('bitcoin', 0.01, subfields=['estimatedFee', 'total'])
 # q = Send().check_limit(100, 'bitcoin')
 # q = Send().send('bitcoin', 0.001, "1MmyYvSEYLCPm45Ps6vQin1heGBv3UpNbf", subfields=['id', 'address', 'amount', 'cryptocurrency', 'fee', 'status'])
 # q = Send().balance(subfields=['id', 'cryptocurrency', 'confirmedBalance'])

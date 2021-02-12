@@ -12,9 +12,9 @@ class Send:
         "nairatoken": 2000000
     }
 
-    def get_network_fee(self, subfields: List, fields):
+    def get_network_fee(self, cryptocurrency: str, amount: float, subfields: List):
         _price = GetNetworkFee()
-        return _price.queryObject(subfields=subfields, fields=fields)
+        return _price.queryObject(subfields=subfields, cryptocurrency=cryptocurrency, amount=amount)
 
     def check_limit(self, amount, cryptocurrency):
         if Send.limits[cryptocurrency.lower()] < amount:

@@ -76,6 +76,17 @@ class GetNetworkFee(Query):
     def __init__(self):
         super().__init__()
         self.name = "getEstimatedNetworkFee"
+    
+    def queryObject(self, cryptocurrency: str, amount: float, subfields: List):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name}(cryptocurrency: {cryptocurrency}, amount: {amount}) {{
+                {newline.join(i for i in subfields)}
+            }}
+        }}
+        """
+        return result
 
 
 class GetOrders(Query):
