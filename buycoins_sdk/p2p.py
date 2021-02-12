@@ -15,23 +15,23 @@ class BuyCoinsP2P():
     #    )
 
     def get_dynamic_price(self, status: str) -> str:
-        return GetDynamicPriceExpiry(
+        return GetDynamicPriceExpiry().queryObject(
             status=status
-        ).queryObject()
+        )
 
     def get_orders(self, status: str, subfields: List) -> str:
-        return GetOrders(
+        return GetOrders().queryObject(
             status=status,
             subfields=subfields
-        ).queryObject()
+        )
 
     def get_market_book(self, subfields: List) -> str:
-        return GetMarketBook(
+        return GetMarketBook().queryObject(
             subfields=subfields
-        ).queryObject()
+        )
 
     def post_limit_order(self, order_side: str, coin_amount: float, cryptocurrency: str, price_type: str, subfields: List, static_price=None, dynamic_exchange_rate=None):
-        order = PostLimitOrder(
+        return PostLimitOrder().Mutate(
             order_side=order_side,
             coin_amount=coin_amount,
             cryptocurrency=cryptocurrency,
@@ -40,13 +40,11 @@ class BuyCoinsP2P():
             dynamic_exchange_rate=dynamic_exchange_rate,
             subfields=subfields
         )
-        return order.Mutate()
 
     def post_market_order(self, order_side: str, coin_amount: float, cryptocurrency: str, subfields: List):
-        order = PostMarketOrder(
+        return PostMarketOrder().Mutate(
             order_side=order_side,
             coin_amount=coin_amount,
             cryptocurrency=cryptocurrency,
             subfields=subfields
         )
-        return order.Mutate()

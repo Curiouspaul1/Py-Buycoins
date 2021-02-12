@@ -6,14 +6,14 @@ class Query:
     def __init__(self):
         self.name = None
 
-    def queryObject(self, subfields: List, _args: Optional[List[tuple]]=None):
-        if _args:
-            mod_fields = [f"{i[0]}:{i[1]}" for i in _args]
-            _args = tuple(i for i in mod_fields)
+    def queryObject(self, subfields: List, fields: Optional[List[tuple]]=None):
+        if fields:
+            mod_fields = [f"{i[0]}:{i[1]}" for i in fields]
+            fields = tuple(i for i in mod_fields)
             newline = "\n                "
             result = f"""
             query {{
-                {self.name}{f"{_args}"}{{
+                {self.name}{f"{fields}"}{{
                     {newline.join(i for i in subfields)}
                 }}
             }}
@@ -32,77 +32,42 @@ class Query:
 
 
 # Get Sale Price
-class GetSalePrice(Query):
+class BuyCoinsPrices(Query):
     """
-    Get Sale price for buying
+    Buycoins prices
     """
     def __init__(self):
         super().__init__()
-        self.name = "getPrices"
+        self.name = "buycoinsPrices"
 
-    def queryObject(self, subfields: Optional[List]=None, cryptocurrency: Optional[str]=None):
-        if cryptocurrency:
-            if subfields:
-                newline = "\n                "
-                result = f"""
-                query {{
-                    {self.name}(cryptocurrency: {cryptocurrency}){{
-                        {newline.join(i for i in subfields)}
-                    }}
-                }}
-                """
-                return result
-            else:
-                newline = "\n                "
-                result = f"""
-                query {{
-                    {self.name}(cryptocurrency: {cryptocurrency}){{
-                        id
-                        status
-                        cryptocurrency
-                        minBuy
-                        minSell
-                        maxBuy
-                        maxSell
-                        minCoinAmount
-                        expiresAt
-                        buyPricePerCoin
-                        sellPricePerCoin
-                    }}
-                }}
-                """
-                return result
-        else:
-            if subfields:
-                newline = "\n                    "
-                result = f"""
-                query {{
-                    {self.name}{{
-                        {newline.join(i for i in subfields)}
-                    }}
-                }}
-                """
-                return result
-            else:
-                newline = "\n                    "
-                result = f"""
-                query {{
-                    {self.name}{{
-                        id
-                        status
-                        cryptocurrency
-                        minBuy
-                        minSell
-                        maxBuy
-                        maxSell
-                        minCoinAmount
-                        expiresAt
-                        buyPricePerCoin
-                        sellPricePerCoin
-                    }}
-                }}
-                """
-                return result
+
+    def queryObject(self, side: str, mode: str, cryptocurrency: str, subfields: List):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name}(side: {side}, mode: {mode}, cryptocurrency: {cryptocurrency}){{
+                {newline.join(i for i in subfields)}
+            }}
+        }}
+        """
+        return result
+
+
+class GetPrices(Query):
+    def __init__(self):
+        super().__init__()
+        self.name = 'getPrices'
+
+    def queryObject(self, subfields):
+        newline = "\n                    "
+        result = f"""
+        query {{
+            {self.name} {{
+                {newline.join(i for i in subfields)}
+            }}
+        }}
+        """
+        return result
 
 class GetNetworkFee(Query):
     """
@@ -114,12 +79,11 @@ class GetNetworkFee(Query):
 
 
 class GetOrders(Query):
-    def __init__(self, status):
+    def __init__(self):
         super().__init__()
         self.name = "getOrders"
-        self.status = status
     
-    def queryObject(self, subfields: List):
+    def queryObject(self, status, subfields: List):
         newline = "\n                    "
         result = f"""
         query {{
@@ -142,11 +106,10 @@ class GetDynamicPriceExpiry(GetOrders):
     """
     Expiration date of a dynamic price
     """
-    def __init__(self, status):
-        super().__init__()
-        self.status = status
+    def __init__(self):
+        self.name = 'getOrders'
 
-    def queryObject(self):
+    def queryObject(self, status):
         newline = "\n                    "
         result = f"""
         query {{
@@ -156,17 +119,16 @@ class GetDynamicPriceExpiry(GetOrders):
         """
         return result
 
+
 class GetMarketBook(Query):
-    def __init__(self, status):
-        super().__init__()
+    def __init__(self):
         self.name = "getMarketBook"
-        self.status = status
     
     def queryObject(self, subfields: List):
         newline = "\n                       "
         result = f"""
         query {{
-            {self.name}(status: {self.status}){{
+            {self.name}{{
                 dynamicPriceExpiry
                 orders {{
                     edges {{
@@ -184,8 +146,4 @@ class GetMarketBook(Query):
 class GetBalance(Query):
     def __init__(self):
         super().__init__()
-        self.name = "getBalance"
-    
-
-# getprice = GetsalePrice()
-# print(getprice.queryObject())
+        self.name = "getBalances"

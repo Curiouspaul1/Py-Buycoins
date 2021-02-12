@@ -3,9 +3,8 @@ from typing import List, Optional
 
 
 class NairaTokenAccount():
-
-
-    def create_account(self, fields: List[tuple], subfields: List) -> str:
-        new_acct = CreateDepositAccount()
-        acct = new_acct.Mutate(fields, subfields)
-        return acct
+    def create_account(self, accountName, subfields: List) -> str:
+        return CreateDepositAccount().Mutate(
+            accountName=accountName,
+            subfields=subfields
+            )

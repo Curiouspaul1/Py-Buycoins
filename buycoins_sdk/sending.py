@@ -12,9 +12,9 @@ class Send:
         "nairatoken": 2000000
     }
 
-    def get_network_fee(self, subfields: List, _args):
+    def get_network_fee(self, subfields: List, fields):
         _price = GetNetworkFee()
-        return _price.queryObject(subfields=subfields, _args=_args)
+        return _price.queryObject(subfields=subfields, fields=fields)
 
     def check_limit(self, amount, cryptocurrency):
         if Send.limits[cryptocurrency.lower()] < amount:
@@ -22,22 +22,22 @@ class Send:
         else:
             return True
 
-    def _send(self, cryptocurrency, amount, address, subfields: List):
+    def send(self, cryptocurrency, amount, address, subfields: List):
         if cryptocurrency.lower() in Send.limits.keys():
             if self.check_limit(amount, cryptocurrency):
-                return SendCoin(
+                return SendCoin().Mutate(
                     cryptocurrency=cryptocurrency,
                     subfields=subfields,
                     amount=amount,
                     address=address
-                ).Mutate()
+                )
             else:
                 raise SendLimitError("Maximum daily transaction amount exceeded")
 
-    def _balance(self, subfields: List, args: Optional[List[tuple]] = None):
-        if args:
+    def balance(self, subfields: List, fields: Optional[List[tuple]]=None):
+        if fields:
             return GetBalance().queryObject(
-                _args=args,
+                fields=fields,
                 subfields=subfields
             )
         else:
