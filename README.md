@@ -5,30 +5,15 @@ Python client for Buycoins Africa's API
 Installation via Pip:
 
 ```bash
-$ pip install buycoins-sdk
+$ pip install py-buycoins
 ```
 
 # Usage
-buycoins-sdk has a client class (BuycoinsClient) that handles all forms of requests via certain available methods. Consider this methods, to be already made queries on your behalf to the buycoins API. You can look at the official BuyCoins API docs [here](https://developers.buycoins.africa/)
+py-buycoins provides a suite of utility classes with methods that automatically generate graphql queries on behalf of the user, with specifications based off input arguments. With these classes, the generated queries can be introspected before being sent. py-buycoins also features a client class which executes the queries to the Buycoins API, over HTTP.
 
-### Available Handler Methods in client Class
-* get_sale_price()
-* create_address()
-* get_dynamic_price()
-* get_orders()
-* get_market_book()
-* create_deposit_account()
-* get_network_fee()
-* get_balance()
-* buy()
-* post_limit_order()
-* post_market_order()
-* sell()
-* send()
-* receive()
 
 ## Authorization
-In order to use any of the methods and safely send requests to Buycoins you must instantiate the client class, with your generated keys \[PUBLIC_KEY\] and \[SECRET_KEY\] as follows:
+In order to use execute queries you must instantiate the client class with our access keys from the buycoins account. You'll need to provision the class with the \[PUBLIC_KEY\] and \[SECRET_KEY\] as follows:
 
 ```python
 from buycoins_sdk import BuycoinsClient
@@ -44,30 +29,28 @@ client = BuycoinsClient(
 Usually these keys are stored as environment variables, with the aid of a `.env` file, it's probably in your best interest to do so.
 
 
-## Basic Usage
-With the new client instance we've created we now have access to all handler methods, lets see how to buy crypto from buycoins. To buy we invoke the buy() method of the client class, as follows:
+## Basic Usage [Buying crypto]
+According the official documentation on Buycoins [here](https://developers.buycoins.africa/), in order to buy crypto we must fetch an active price ID, first using the `getPrices` query, and then use that to send a query via the `buy` query. We can do this using the BuyCoins class as follows:
 
 ```python
-# fetch current price of bitcoin
-price = client.buy(
-    coin_amount=0.002,
-    cryptocurrency="bitcoin"
-)
-```
-This request would return a number of response_fields from the graphql response, by default, however you may not want all of the fields, as such you are at liberty to provision a "response_fields" arguments, which is an array of strings, corresponding to the names of fields you want in the response body. For example:
+from orders import BuyCoins
 
-```python
-# fetch current price of bitcoin
-price = client.buy(
-    coin_amount=0.002,
-    cryptocurrency="bitcoin",
-    response_fields=[
-        "id",
-        "cryptocurrency",
-        "status",
-        "totalCoinAmount"
-    ]
-)
+# fetches active price id for bitcoin
+price_id = client.get_active_price_id(cryptocurrency='bitcoin') 
+
+# generate query
+buy = BuyCoins(
+    cryptocurrency='bitcoin',
+    coin_amount=0.02,
+    price = price_id
+).from_buycoins(response_fields=['id', 'cryptocurrency', 'status'])
+
+# execute query
+resp = client.execute(query=buy)
+
+# OR
+
+resp = buy.execute(client=client) # returns all response_fields from API by default
 ```
 If you need to know what kind of fields are returned by the BuyCoins API, check the official docs [here](https://developers.buycoins.africa/).
 

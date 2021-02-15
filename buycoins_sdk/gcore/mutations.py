@@ -3,12 +3,43 @@ from typing import List, Optional
 
 class Mutation:
     """
-    Pls Add a description
+    The Mutation class is the parent class for all sub-mutation classes in the library.
     """
     def __init__(self):
         self.name = None
 
     def Mutate(self, fields: List[tuple], response_fields: List):
+        """
+        Automatically and crudely generates mutation queries on behalf of user.
+        Should be used in place of the other subclasses, if user wishes to customize his/her
+        queries completely from scratch.
+
+        Args:
+            fields (List[tuple]): A list of tuples with length of two(2).
+            The first item (tuple[0]) in each tuple corresponds or should correspond to the name of a field to be specified
+            as a mutation argument/field. The second item in each tuple (tuple[1]), corresponds to
+            the value of tuple[0]. This would be such that:
+
+                fields = [('name','Josh'),('age',14)]
+            would correspond to:
+                mutation{
+                    createUser(name: 'Josh', age: 14){
+                        response_fields
+                    }
+                }
+            
+            response_fields (List): A list of string values that correspond to the names of,
+            response fields, that a user wants to be returned or specified in the response from
+            the GraphQL API. Typically:
+                subfields = ['id', 'name']
+            would correspond to:
+                mutation{
+                    createUser(name: 'Josh', age: 14){
+                        id,
+                        name
+                    }
+                }
+        """
         mod_fields = [f"{i[0]}: {str(i[1])}" for i in fields]
         _args = tuple(i.strip("\'") for i in mod_fields)
         newline = "\n                "
@@ -25,7 +56,7 @@ class Mutation:
 class CreateDepositAccount(Mutation):
     def __init__(self):
         """
-        Create deposit account
+        Create deposit account mutation class inherits from <class 'Mutation'>
         """
         self.name = "createDepositAccount"
     
@@ -45,7 +76,7 @@ class CreateDepositAccount(Mutation):
 class Buy(Mutation):
     def __init__(self):
         """
-        Buy crypto
+        Buy crypto (from buycoins) mutation class inherits from <class 'Mutation'>
         """
         super().__init__()
         self.name = "buy"
@@ -64,6 +95,9 @@ class Buy(Mutation):
 
 
 class PostLimitOrder(Mutation):
+    """
+    Post limit order mutation class inherits from <class 'Mutation'>
+    """
     def __init__(self):
         super().__init__()
         self.name = "postLimitOrder"
@@ -92,6 +126,9 @@ class PostLimitOrder(Mutation):
 
     
 class PostMarketOrder(Mutation):
+    """
+        Create deposit account mutation class inherits from <class 'Mutation'>
+    """
     def __init__(self):
         super().__init__()
         self.name = "postMarketOrder"
@@ -113,7 +150,7 @@ class PostMarketOrder(Mutation):
 class Sell(Mutation):
     def __init__(self):
         """
-        Sell crypto
+            Sell crypto mutation class inherits from <class 'Mutation'>
         """
         super().__init__()
         self.name = "sell"
@@ -133,6 +170,9 @@ class Sell(Mutation):
 
 
 class SendCoin(Mutation):
+    """
+        Send crypto mutation class inherits from <class 'Mutation'>
+    """
     def __init__(self):
         super().__init__()
         self.name = "send"
@@ -155,6 +195,9 @@ class SendCoin(Mutation):
 
 
 class CreateAddress(Mutation):
+    """
+        Create address mutation class inherits from <class 'Mutation'>
+    """
     def __init__(self):
         super().__init__()
         self.name = "createAddress"

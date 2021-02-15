@@ -4,28 +4,23 @@ from typing import List, Optional
 from exc import InvalidClientObject
 
 
-class OrdersBase:
-    def get_prices(
-        self, response_fields: List,
-        cryptocurrency:  Optional[str]=None
-    ) -> str:
-        if cryptocurrency:
-            return GetPrices().queryObject(
-                cryptocurrency=cryptocurrency,
-                response_fields=response_fields
-            )
-        else:
-            return GetPrices().queryObject(
-                response_fields=response_fields
-            )
-        # try:
-        #     return self.client.execute(query=query)
-        # except AttributeError:
-        #     raise InvalidClientObject("Invalid client object specified; has no attr 'execute' ")
+def get_prices(
+    self, response_fields: List,
+    cryptocurrency:  Optional[str]=None
+) -> str:
+    if cryptocurrency:
+        return GetPrices().queryObject(
+            cryptocurrency=cryptocurrency,
+            response_fields=response_fields
+        )
+    else:
+        return GetPrices().queryObject(
+            response_fields=response_fields
+        )
 
 
 # Buying crytocurrency from Buycoins
-class BuyCoins(OrdersBase):
+class BuyCoins:
     def __init__(self, price: str, coin_amount: float, cryptocurrency):
         self.coin_amount = coin_amount
         self.cryptocurrency = cryptocurrency
@@ -50,7 +45,7 @@ class BuyCoins(OrdersBase):
         except AttributeError:
             raise InvalidClientObject("<BuyCoinsClient> object expected received {} instead".format(type(client)))
 
-class SellCoins(OrdersBase):
+class SellCoins:
     def __init__(self, price: str, coin_amount: float, cryptocurrency):
         self.coin_amount = coin_amount
         self.cryptocurrency = cryptocurrency
