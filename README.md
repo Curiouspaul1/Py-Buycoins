@@ -30,7 +30,7 @@ Usually these keys are stored as environment variables, with the aid of a `.env`
 
 
 ## Basic Usage [Buying crypto]
-According the official documentation on Buycoins [here](https://developers.buycoins.africa/), in order to buy crypto we must fetch an active price ID, first using the `getPrices` query, and then use that to send a query via the `buy` query. We can do this using the BuyCoins class as follows:
+According the official documentation on Buycoins [here](https://developers.buycoins.africa/), in order to buy crypto we must fetch an active price ID, first using the `getPrices`. The client class also features some generic helper methods such as get_active_price_id, which can be used to fetch price IDs for the sake of orders to the API, instead of having to call the query generator classes. The query generator remains however. Once we have that ID, we can then use that to send a query via the `buy` query. We can do this using the BuyCoins class (query generator) as follows:
 
 ```python
 from orders import BuyCoins
