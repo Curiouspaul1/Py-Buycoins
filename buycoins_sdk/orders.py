@@ -1,30 +1,71 @@
 from gcore.queries import GetOrders, GetMarketBook, GetPrices
 from gcore.mutations import Buy, Sell
 from typing import List, Optional
+from exc import InvalidClientObject
+
 
 class OrdersBase:
-    def get_prices(self, subfields: List) -> str:
-        return GetPrices().queryObject(
-            subfields=subfields
-        )
+    def get_prices(
+        self, response_fields: List,
+        cryptocurrency:  Optional[str]=None
+    ) -> str:
+        if cryptocurrency:
+            return GetPrices().queryObject(
+                cryptocurrency=cryptocurrency,
+                response_fields=response_fields
+            )
+        else:
+            return GetPrices().queryObject(
+                response_fields=response_fields
+            )
+        # try:
+        #     return self.client.execute(query=query)
+        # except AttributeError:
+        #     raise InvalidClientObject("Invalid client object specified; has no attr 'execute' ")
 
 
 # Buying crytocurrency from Buycoins
 class BuyCoins(OrdersBase):
-    def buy(self, price: str, coin_amount: float, cryptocurrency, subfields: Optional[List]=None) -> str:
+    def __init__(self, price: str, coin_amount: float, cryptocurrency):
+        self.coin_amount = coin_amount
+        self.cryptocurrency = cryptocurrency
+        self.price = price
+
+    def from_buycoins(self, response_fields) -> str:
         return Buy().Mutate(
-            price=price,
-            coin_amount=coin_amount,
-            cryptocurrency=cryptocurrency,
-            subfields=subfields
+            price=self.price,
+            coin_amount=self.coin_amount,
+            cryptocurrency=self.cryptocurrency,
+            response_fields=response_fields
         )
-        
+    
+    def execute(self, client):
+        try:
+            return client.execute(query=self.from_buycoins(
+                response_fields=[
+                    'id', 'cryptocurrency', 'status', 
+                    'totalCoinAmount', 'side'
+                ]
+            ))
+        except AttributeError:
+            raise InvalidClientObject("<BuyCoinsClient> object expected received {} instead".format(type(client)))
 
 class SellCoins(OrdersBase):
-    def sell(self, price: str, coin_amount: float, cryptocurrency: str, subfields: List) -> str:
+    def __init__(self, price: str, coin_amount: float, cryptocurrency):
+        self.coin_amount = coin_amount
+        self.cryptocurrency = cryptocurrency
+        self.price = price
+    
+    def sell(self, response_fields) -> str:
         return Sell().Mutate(
-            coin_amount=coin_amount,
-            price=price,
-            subfields=subfields,
-            cryptocurrency=cryptocurrency
+            coin_amount=self.coin_amount,
+            price=self.price,
+            response_fields=response_fields,
+            cryptocurrency=self.cryptocurrency
         )
+
+    def execute(self, client):
+        try:
+            return client.execute(query=self.sell())
+        except AttributeError:
+            raise InvalidClientObject("<BuyCoinsClient> object expected received {} instead".format(type(client)))

@@ -12,3 +12,7 @@ class MissingKeyError(PycoinsException):
 
 class SendLimitError(PycoinsException):
     pass
+
+
+class InvalidClientObject(PycoinsException):
+    pass

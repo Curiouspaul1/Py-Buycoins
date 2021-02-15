@@ -8,14 +8,14 @@ class Mutation:
     def __init__(self):
         self.name = None
 
-    def Mutate(self, fields: List[tuple], subfields: List):
+    def Mutate(self, fields: List[tuple], response_fields: List):
         mod_fields = [f"{i[0]}: {str(i[1])}" for i in fields]
         _args = tuple(i.strip("\'") for i in mod_fields)
         newline = "\n                "
         result = f"""
         mutation {{
             {self.name}{_args} {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """
@@ -29,12 +29,12 @@ class CreateDepositAccount(Mutation):
         """
         self.name = "createDepositAccount"
     
-    def Mutate(self, accountName: str, subfields: List):
+    def Mutate(self, accountName: str, response_fields: List):
         newline = "\n                "
         result = f"""
         mutation {{
             {self.name}(accountName: \"{f"{accountName}"}\") {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """
@@ -50,48 +50,17 @@ class Buy(Mutation):
         super().__init__()
         self.name = "buy"
 
-    def Mutate(self, price: str, coin_amount: float, cryptocurrency, subfields: Optional[List]=None):
-        if subfields:
-            newline = "\n                "
-            result = f"""
-            mutation {{
-                {self.name}(price: \"{f"{price}"}\", coin_amount: {coin_amount}, cryptocurrency: {cryptocurrency})
-                {{
-                    {newline.join(i for i in subfields)}
-                }}
+    def Mutate(self, price: str, coin_amount: float, cryptocurrency, response_fields: List):
+        newline = "\n                "
+        result = f"""
+        mutation {{
+            {self.name}(price: \"{f"{price}"}\", coin_amount: {coin_amount}, cryptocurrency: {cryptocurrency})
+            {{
+                {newline.join(i for i in response_fields)}
             }}
-            """
-            return result
-        else:
-            newline = "\n                "
-            result = f"""
-            mutation {{
-                {self.name}(price: \"{f"{price}"}\", coin_amount: {coin_amount}, cryptocurrency: {cryptocurrency})
-                {{
-                    id
-                    price {{
-                        id
-                        status
-                        cryptocurrency
-                        minBuy
-                        minSell
-                        maxBuy
-                        maxSell
-                        minCoinAmount
-                        expiresAt
-                        buyPricePerCoin
-                        sellPricePerCoin
-                    }}
-                    cryptocurrency
-                    filledCoinAmount
-                    side
-                    status
-                    totalCoinAmount
-                    createdAt
-                }}
-            }}
-            """
-            return result
+        }}
+        """
+        return result
 
 
 class PostLimitOrder(Mutation):
@@ -99,14 +68,14 @@ class PostLimitOrder(Mutation):
         super().__init__()
         self.name = "postLimitOrder"
         
-    def Mutate(self, order_side: str, coin_amount: float, cryptocurrency: str, price_type: str, subfields: List, static_price=None, dynamic_exchange_rate=None):
+    def Mutate(self, order_side: str, coin_amount: float, cryptocurrency: str, price_type: str, response_fields: List, static_price=None, dynamic_exchange_rate=None):
         newline = "\n                "
         if price_type == 'static':
             result = f"""
             mutation {{
                 {self.name}(orderSide: {order_side}, coinAmount: {coin_amount}, cryptocurrency: {cryptocurrency}, staticPrice: {static_price}, priceType: {price_type})
                 {{
-                    {newline.join(i for i in subfields)}
+                    {newline.join(i for i in response_fields)}
                 }}
             }}
             """
@@ -115,7 +84,7 @@ class PostLimitOrder(Mutation):
             mutation {{
                 {self.name}(orderSide: {order_side}, coinAmount: {coin_amount}, cryptocurrency: {cryptocurrency}, dynamicExchangeRate: {dynamic_exchange_rate}, priceType: {price_type})
                 {{
-                    {newline.join(i for i in subfields)}
+                    {newline.join(i for i in response_fields)}
                 }}
             }}
             """
@@ -128,13 +97,13 @@ class PostMarketOrder(Mutation):
         self.name = "postMarketOrder"
 
 
-    def Mutate(self, order_side: str, coin_amount: float, cryptocurrency: str, subfields: List):
+    def Mutate(self, order_side: str, coin_amount: float, cryptocurrency: str, response_fields: List):
         newline = "\n                "
         result = f"""
         mutation {{
             {self.name}(orderSide: {order_side}, coinAmount: {coin_amount}, cryptocurrency: {cryptocurrency})
             {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """
@@ -150,13 +119,13 @@ class Sell(Mutation):
         self.name = "sell"
 
 
-    def Mutate(self, subfields: List, price: str, coin_amount: float, cryptocurrency):
+    def Mutate(self, response_fields: List, price: str, coin_amount: float, cryptocurrency):
         newline = "\n                "
         result = f"""
         mutation {{
             {self.name}(price: \"{f"{price}"}\", coin_amount: {coin_amount}, cryptocurrency: {cryptocurrency})
             {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """
@@ -168,13 +137,13 @@ class SendCoin(Mutation):
         super().__init__()
         self.name = "send"
 
-    def Mutate(self, cryptocurrency, address, amount, subfields: List):
+    def Mutate(self, cryptocurrency, address, amount, response_fields: List):
         newline = "\n                "
         result = f"""
         mutation {{
             {self.name}(cryptocurrency: {cryptocurrency}, amount: {amount}, address: \"{f"{address}"}\")
             {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
                 transaction {{
                     hash
                     id
@@ -190,13 +159,13 @@ class CreateAddress(Mutation):
         super().__init__()
         self.name = "createAddress"
 
-    def Mutate(self, cryptocurrency, subfields: List):
+    def Mutate(self, cryptocurrency, response_fields: List):
         newline = "\n                "
         result = f"""
         mutation {{
             {self.name}(cryptocurrency: {cryptocurrency})
             {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """

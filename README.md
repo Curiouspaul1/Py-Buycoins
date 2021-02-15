@@ -54,14 +54,14 @@ price = client.buy(
     cryptocurrency="bitcoin"
 )
 ```
-This request would return a number of subfields from the graphql response, by default, however you may not want all of the fields, as such you are at liberty to provision a "subfields" arguments, which is an array of strings, corresponding to the names of fields you want in the response body. For example:
+This request would return a number of response_fields from the graphql response, by default, however you may not want all of the fields, as such you are at liberty to provision a "response_fields" arguments, which is an array of strings, corresponding to the names of fields you want in the response body. For example:
 
 ```python
 # fetch current price of bitcoin
 price = client.buy(
     coin_amount=0.002,
     cryptocurrency="bitcoin",
-    subfields=[
+    response_fields=[
         "id",
         "cryptocurrency",
         "status",
@@ -70,6 +70,12 @@ price = client.buy(
 )
 ```
 If you need to know what kind of fields are returned by the BuyCoins API, check the official docs [here](https://developers.buycoins.africa/).
+
+
+### More Examples
+```python
+
+```
 
 ### Making Custom requests
 

@@ -6,7 +6,7 @@ class Query:
     def __init__(self):
         self.name = None
 
-    def queryObject(self, subfields: List, fields: Optional[List[tuple]]=None):
+    def queryObject(self, response_fields: List, fields: Optional[List[tuple]]=None):
         if fields:
             mod_fields = [f"{i[0]}:{i[1]}" for i in fields]
             fields = tuple(i for i in mod_fields)
@@ -14,7 +14,7 @@ class Query:
             result = f"""
             query {{
                 {self.name}{f"{fields}"}{{
-                    {newline.join(i for i in subfields)}
+                    {newline.join(i for i in response_fields)}
                 }}
             }}
             """
@@ -24,7 +24,7 @@ class Query:
             result = f"""
             query {{
                 {self.name}{{
-                    {newline.join(i for i in subfields)}
+                    {newline.join(i for i in response_fields)}
                 }}
             }}
             """
@@ -41,12 +41,12 @@ class BuyCoinsPrices(Query):
         self.name = "buycoinsPrices"
 
 
-    def queryObject(self, side: str, mode: str, cryptocurrency: str, subfields: List):
+    def queryObject(self, side: str, mode: str, cryptocurrency: str, response_fields: List):
         newline = "\n                    "
         result = f"""
         query {{
             {self.name}(side: {side}, mode: {mode}, cryptocurrency: {cryptocurrency}){{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """
@@ -58,17 +58,27 @@ class GetPrices(Query):
         super().__init__()
         self.name = 'getPrices'
 
-    def queryObject(self, subfields):
-        newline = "\n                    "
-        result = f"""
-        query {{
-            {self.name} {{
-                {newline.join(i for i in subfields)}
+    def queryObject(self, response_fields: List, cryptocurrency: Optional[str]=None):
+        if cryptocurrency:
+            newline = "\n                    "
+            result = f"""
+            query {{
+                {self.name} (cryptocurrency: {cryptocurrency}){{
+                    {newline.join(i for i in response_fields)}
+                }}
             }}
-        }}
-        """
-        return result
-
+            """
+            return result
+        else:
+            newline = "\n                    "
+            result = f"""
+            query {{
+                {self.name}{{
+                    {newline.join(i for i in response_fields)}
+                }}
+            }}
+            """
+            return result
 class GetNetworkFee(Query):
     """
     Transfer charges
@@ -77,12 +87,12 @@ class GetNetworkFee(Query):
         super().__init__()
         self.name = "getEstimatedNetworkFee"
     
-    def queryObject(self, cryptocurrency: str, amount: float, subfields: List):
+    def queryObject(self, cryptocurrency: str, amount: float, response_fields: List):
         newline = "\n                    "
         result = f"""
         query {{
             {self.name}(cryptocurrency: {cryptocurrency}, amount: {amount}) {{
-                {newline.join(i for i in subfields)}
+                {newline.join(i for i in response_fields)}
             }}
         }}
         """
@@ -94,7 +104,7 @@ class GetOrders(Query):
         super().__init__()
         self.name = "getOrders"
     
-    def queryObject(self, status, subfields: List):
+    def queryObject(self, status, response_fields: List):
         newline = "\n                    "
         result = f"""
         query {{
@@ -103,7 +113,7 @@ class GetOrders(Query):
                 orders {{
                     edges {{
                         node {{
-                            {newline.join(i for i in subfields)}
+                            {newline.join(i for i in response_fields)}
                         }}
                     }}
                 }}
@@ -135,7 +145,7 @@ class GetMarketBook(Query):
     def __init__(self):
         self.name = "getMarketBook"
     
-    def queryObject(self, subfields: List):
+    def queryObject(self, response_fields: List):
         newline = "\n                       "
         result = f"""
         query {{
@@ -144,7 +154,7 @@ class GetMarketBook(Query):
                 orders {{
                     edges {{
                         node {{
-                            {newline.join(i for i in subfields)}
+                            {newline.join(i for i in response_fields)}
                         }}
                     }}
                 }}

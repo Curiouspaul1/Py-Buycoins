@@ -3,8 +3,11 @@ from typing import List
 
 
 class Receive:
-    def create_address(self, cryptocurrency, subfields: List):
+    def __init__(self, cryptocurrency: str):
+        self.cryptocurrency = cryptocurrency
+    
+    def create_address(self, response_fields: List):
         return CreateAddress().Mutate(
-            cryptocurrency=cryptocurrency,
-            subfields=subfields
+            cryptocurrency=self.cryptocurrency,
+            response_fields=response_fields
         )
