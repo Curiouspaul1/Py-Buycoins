@@ -5,8 +5,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='py-buycoins',
-    packages=find_packages(include=['buycoins_sdk','buycoins_sdk/gcore']),
-    version='1.0',
+    packages=find_packages(),
+    version='0.1.0',
     description='Python client library for BuyCoins Africa API',
     long_description=long_description,
     long_description_content_type="text/markdown",

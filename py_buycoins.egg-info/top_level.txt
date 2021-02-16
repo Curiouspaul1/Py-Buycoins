@@ -1,1 +1,1 @@
-buycoins_sdk
+py_buycoins

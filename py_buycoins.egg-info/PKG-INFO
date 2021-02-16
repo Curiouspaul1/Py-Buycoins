@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: py-buycoins
-Version: 1.0
+Version: 0.1.0
 Summary: Python client library for BuyCoins Africa API
 Home-page: https://github.com/Bashorun97/BuyCoins-Python-SDK
 Author: Paul <paulcurious7@gmail.com>, Emmanuel Bashorun <bashorun.emma@gmail.com>
