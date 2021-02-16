@@ -69,18 +69,55 @@ _send = Send(
     amount=0.03
 )
 
+# generates query string
 order = _send.send(respone_fields=['id','fee', 'amount','status'])
 
+# sends request via the client object
 client.execute(order)
 
 # OR
 
+# returns all response_fields from API by default
 _send.execute(client=client)
 
 ```
 
-### Making Custom requests
+### Making Custom requests 
+py-buycoins also features a generic mutation/query generator that allows you generate your own queries from scratch. In the event that the utility classes, we provide don't meet your requirements, or the BuyCoins API is updated and the current utility classes haven't been updated to reflect the change; the `Mutation` class allows you create custom mutations, as per your specification.
 
+```python
+from gcore.mutations import Mutation
+
+custom_mutation = Mutation(name="myMutation") # instantiate class with proposed name of mutation
+
+# generate query string
+mutation_string = custom_mutation.Mutate(
+    fields=[('cryptocurrency','bitcoin'),('status','complete')],
+    response_fields=['id','cryptocurrency','status']
+) Q
+
+client.execute(query=mutation_string)
+```
+
+A similar thing can be done for queries as with mutations
+
+```python
+from gcore.queries import Query
+
+custom_query = Query(name="myQuery") # instantiate class with proposed name of query
+`
+# generate query string
+query_string = custom_query.queryObject(
+    response_fields=['id','cryptocurrency','price'] # example response fields
+)
+
+# OR if the query has query parameters
+
+query_string = custom.query.queryObject(
+    fields=[('id',1]),
+    response_fields=['id','cryptocurrency','price']
+)
+```
 
 ### Note For Contributor
 
