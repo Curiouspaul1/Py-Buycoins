@@ -43,10 +43,11 @@ buy = BuyCoins(
     cryptocurrency='bitcoin',
     coin_amount=0.02,
     price = price_id
-).from_buycoins(response_fields=['id', 'cryptocurrency', 'status'])
+)
+order = buy.from_buycoins(response_fields=['id', 'cryptocurrency', 'status']) # generates query string
 
 # execute query
-resp = client.execute(query=buy)
+resp = client.execute(query=order)
 
 # OR
 
@@ -56,7 +57,25 @@ If you need to know what kind of fields are returned by the BuyCoins API, check 
 
 
 ### More Examples
+#### Sending Crypto
+To send crypto to an on-chain address all we need to do is call the `send` method from the `Send` utility class. We can also call `get_network_fee` to see how much we might be charged for the transfer.
+
 ```python
+from sending import Send
+
+_send = Send(
+    address="1MmyYvSEYLCPm45Ps6vQin1heGBv3UpNbf",
+    cryptocurrecny="bitcoin",
+    amount=0.03
+)
+
+order = _send.send(respone_fields=['id','fee', 'amount','status'])
+
+client.execute(order)
+
+# OR
+
+_send.execute(client=client)
 
 ```
 
