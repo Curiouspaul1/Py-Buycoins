@@ -119,7 +119,7 @@ query_string = custom.query.queryObject(
 )
 ```
 
-## Upcoming Updates in V2.0
+## Upcoming Updates in V0.2.0
 
 - Optional response_fields in generating query strings: static response_fields returned if response_fields not specified by default
 
