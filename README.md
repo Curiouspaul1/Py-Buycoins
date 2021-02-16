@@ -94,7 +94,7 @@ custom_mutation = Mutation(name="myMutation") # instantiate class with proposed 
 mutation_string = custom_mutation.Mutate(
     fields=[('cryptocurrency','bitcoin'),('status','complete')],
     response_fields=['id','cryptocurrency','status']
-) Q
+)
 
 client.execute(query=mutation_string)
 ```
@@ -118,6 +118,14 @@ query_string = custom.query.queryObject(
     response_fields=['id','cryptocurrency','price']
 )
 ```
+
+## Upcoming Updates in V2.0
+
+- Optional response_fields in generating query strings: static response_fields returned if response_fields not specified by default
+
+- Extension of test modules and error handling modules.
+
+- Extra helper methods available in client class.
 
 ### Note For Contributor
 
