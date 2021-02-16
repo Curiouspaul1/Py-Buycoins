@@ -5,8 +5,9 @@ from exc import InvalidClientObject
 
 
 # P2P purchase
-class BuyCoinsP2P():
+class BuyCoinsP2P:
     def __init__(
+        self,
         order_side: str,
         coin_amount: float,
         cryptocurrency: str,
