@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: py-buycoins
-Version: 0.1.0
+Version: 0.1.1
 Summary: Python client library for BuyCoins Africa API
 Home-page: https://github.com/Bashorun97/BuyCoins-Python-SDK
 Author: Paul <paulcurious7@gmail.com>, Emmanuel Bashorun <bashorun.emma@gmail.com>
@@ -23,7 +23,7 @@ Description: # Buycoins-SDK
         In order to use execute queries you must instantiate the client class with our access keys from the buycoins account. You'll need to provision the class with the \[PUBLIC_KEY\] and \[SECRET_KEY\] as follows:
         
         ```python
-        from buycoins_sdk import BuycoinsClient
+        from py_buycoins.APIClient import BuycoinsClient
         import os
         
         client = BuycoinsClient(
@@ -126,7 +126,7 @@ Description: # Buycoins-SDK
         )
         ```
         
-        ## Upcoming Updates in V2.0
+        ## Upcoming Updates in V0.2.0
         
         - Optional response_fields in generating query strings: static response_fields returned if response_fields not specified by default
         
@@ -137,6 +137,7 @@ Description: # Buycoins-SDK
         ### Note For Contributor
         
         ```requirements.txt``` is for development purposes only as regards setting up your development environment, not used in the build process of the library. Dependencies are (or will be) specified in setup.py
+        
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers

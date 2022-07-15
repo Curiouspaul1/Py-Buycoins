@@ -6,12 +6,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name='py-buycoins',
     packages=find_packages(),
-    version='0.1.0',
+    version='0.1.1',
     description='Python client library for BuyCoins Africa API',
     long_description=long_description,
     long_description_content_type="text/markdown",
     author='Paul <paulcurious7@gmail.com>, Emmanuel Bashorun <bashorun.emma@gmail.com>',
     url='https://github.com/Bashorun97/BuyCoins-Python-SDK',
+    install_requires=['requests'],
     classifiers=[
         # Project Maturity
         'Development Status :: 3 - Alpha',

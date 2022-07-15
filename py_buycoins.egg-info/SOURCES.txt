@@ -11,6 +11,7 @@ py_buycoins/sending.py
 py_buycoins.egg-info/PKG-INFO
 py_buycoins.egg-info/SOURCES.txt
 py_buycoins.egg-info/dependency_links.txt
+py_buycoins.egg-info/requires.txt
 py_buycoins.egg-info/top_level.txt
 py_buycoins/gcore/__init__.py
 py_buycoins/gcore/mutations.py
