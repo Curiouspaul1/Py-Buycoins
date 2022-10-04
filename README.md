@@ -13,7 +13,7 @@ py-buycoins provides a suite of utility classes with methods that automatically 
 
 
 ## Authorization
-In order to use execute queries you must instantiate the client class with our access keys from the buycoins account. You'll need to provision the class with the \[PUBLIC_KEY\] and \[SECRET_KEY\] as follows:
+In order to use execute queries you must instantiate the client class with your access keys from the buycoins account. You'll need to provision the class with the \[PUBLIC_KEY\] and \[SECRET_KEY\] as follows:
 
 ```python
 from py_buycoins.APIClient import BuycoinsClient
